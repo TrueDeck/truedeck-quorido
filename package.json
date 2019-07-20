@@ -1,0 +1,30 @@
+{
+  "name": "truedeck-quorido",
+  "version": "1.0.0",
+  "description": "Multi-Blockchain Provably Fair Casino Platform by TrueDeck",
+  "main": "client/index.js",
+  "scripts": {
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrueDeck/truedeck-quorido.git"
+  },
+  "author": "truedeckdev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TrueDeck/truedeck-quorido/issues"
+  },
+  "homepage": "https://github.com/TrueDeck/truedeck-quorido#readme",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "openzeppelin-eth": "^2.1.3",
+    "truffle-hdwallet-provider": "^1.0.3",
+    "zos-lib": "^2.2.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "openzeppelin-test-helpers": "^0.3.0",
+    "zos": "^2.4.1"
+  }
+}
