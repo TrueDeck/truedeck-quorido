@@ -138,7 +138,7 @@ class App extends Component {
   getCount = async () => {
     const { contract } = this.state;
     // Get the value from the contract to prove it worked.
-    const response = await contract.methods.getCounter().call();
+    const response = await contract.methods.count().call();
     // Update state with the result.
     this.setState({ count: response });
   };

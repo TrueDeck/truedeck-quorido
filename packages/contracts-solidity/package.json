@@ -1,10 +1,18 @@
 {
   "name": "truedeck-quorido",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Multi-Blockchain Provably Fair Casino Platform by TrueDeck",
   "main": "client/index.js",
   "scripts": {
-    "test": "truffle test"
+    "trace": "MODE=trace truffle test",
+    "coverage": "npm run clean && MODE=coverage truffle test; istanbul report html && opn coverage/index.html",
+    "profile": "npm run clean && MODE=profile truffle test; istanbul report html && opn coverage/index.html",
+    "clean": "shx rm -rf coverage",
+    "test": "truffle test",
+    "compile": "truffle compile",
+    "migrate": "truffle migrate",
+    "sol-compiler": "sol-compiler",
+    "sol-compiler:watch": "sol-compiler -w"
   },
   "repository": {
     "type": "git",
@@ -17,14 +25,24 @@
   },
   "homepage": "https://github.com/TrueDeck/truedeck-quorido#readme",
   "dependencies": {
-    "dotenv": "^6.2.0",
-    "openzeppelin-eth": "^2.1.3",
-    "truffle-hdwallet-provider": "^1.0.3",
-    "zos-lib": "^2.2.3"
+    "@0x/sol-compiler": "3.1.9",
+    "@0x/sol-coverage": "3.0.6",
+    "@0x/sol-profiler": "3.1.8",
+    "@0x/sol-trace": "2.0.14",
+    "@0x/subproviders": "4.1.1",
+    "istanbul": "0.4.5",
+    "opn-cli": "4.1.0",
+    "shx": "0.3.2",
+    "truffle": "5.0.28",
+    "web3-provider-engine": "14.1.0",
+    "dotenv": "6.2.0",
+    "openzeppelin-eth": "2.2.0",
+    "truffle-hdwallet-provider": "1.0.14",
+    "zos-lib": "2.4.2"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "openzeppelin-test-helpers": "^0.3.0",
-    "zos": "^2.4.1"
+    "chai": "4.2.0",
+    "openzeppelin-test-helpers": "0.3.2",
+    "zos": "2.4.2"
   }
 }

@@ -65,6 +65,7 @@ zos.dev-*
 
 # contracts build
 build
+.0x-artifacts/
 
 # IDE files
 .idea/
