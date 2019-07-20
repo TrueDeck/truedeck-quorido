@@ -1,18 +1,81 @@
+const ProviderEngine = require("web3-provider-engine");
+const RpcProvider = require("web3-provider-engine/subproviders/rpc.js");
+const { TruffleArtifactAdapter } = require("@0x/sol-trace");
+const { GanacheSubprovider } = require("@0x/subproviders");
+const { ProfilerSubprovider } = require("@0x/sol-profiler");
+const { CoverageSubprovider } = require("@0x/sol-coverage");
+const { RevertTraceSubprovider } = require("@0x/sol-trace");
+
+const HDWalletProvider = require("truffle-hdwallet-provider");
 const path = require("path");
 require('dotenv').config();
+
+const mode = process.env.MODE;
 const mnemonic = process.env.MNENOMIC;
-const HDWalletProvider = require("truffle-hdwallet-provider");
-// Create your own key for Production environments (https://infura.io/)
 const INFURA_ID = 'd6760e62b67f4937ba1ea2691046f06d';
+
+const projectRoot = "";
+const solcVersion = "0.5.2";
+const defaultFromAddress = "0x5409ed021d9299bf6814279a6a1411a7e866a631";
+const isVerbose = true;
+const artifactAdapter = new TruffleArtifactAdapter(projectRoot, solcVersion);
+const provider = new ProviderEngine();
+
+if (mode === "profile") {
+  global.profilerSubprovider = new ProfilerSubprovider(
+      artifactAdapter,
+      defaultFromAddress,
+      isVerbose
+  );
+  global.profilerSubprovider.stop();
+  provider.addProvider(global.profilerSubprovider);
+  provider.addProvider(new RpcProvider({ rpcUrl: "http://localhost:8545" }));
+} else {
+  if (mode === "coverage") {
+    global.coverageSubprovider = new CoverageSubprovider(
+        artifactAdapter,
+        defaultFromAddress,
+        {
+          isVerbose,
+          ignoreFilesGlobs: ['**/node_modules/**', '**/interfaces/**', '**/test/**'],
+        }
+    );
+    provider.addProvider(global.coverageSubprovider);
+  } else if (mode === "trace") {
+    const revertTraceSubprovider = new RevertTraceSubprovider(
+        artifactAdapter,
+        defaultFromAddress,
+        isVerbose
+    );
+    provider.addProvider(revertTraceSubprovider);
+  }
+  const ganahceSubprovider = new GanacheSubprovider();
+  provider.addProvider(ganahceSubprovider);
+}
+provider.start(err => {
+  if (err !== undefined) {
+    console.log(err);
+    process.exit(1);
+  }
+});
+/**
+ * HACK: Truffle providers should have `send` function, while `ProviderEngine` creates providers with `sendAsync`,
+ * but it can be easily fixed by assigning `sendAsync` to `send`.
+ */
+provider.send = provider.sendAsync.bind(provider);
 
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
   // to customize your Truffle configuration!
   networks: {
-    development: {
+    local: {
       host: "127.0.0.1",
       port: 8545,
       network_id: "*",
+    },
+    development: {
+      provider,
+      network_id: "*"
     },
     ropsten: {
       provider: function() {
