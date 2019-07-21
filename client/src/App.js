@@ -5,7 +5,6 @@ import Footer from './components/Footer/index.js';
 import Hero from './components/Hero/index.js';
 import Web3Info from './components/Web3Info/index.js';
 import CounterUI from './components/Counter/index.js';
-import Wallet from './components/Wallet/index.js';
 import Instructions from './components/Instructions/index.js';
 import { Loader } from 'rimble-ui';
 
@@ -35,10 +34,8 @@ class App extends Component {
   componentDidMount = async () => {
     const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
     let Counter = {};
-    let Wallet = {};
     try {
       Counter = require('../../contracts/Counter.sol');
-      Wallet = require('../../contracts/Wallet.sol');
     } catch (e) {
       console.log(e);
     }
@@ -62,7 +59,6 @@ class App extends Component {
         let balance = accounts.length > 0 ? await web3.eth.getBalance(accounts[0]) : web3.utils.toWei('0');
         balance = web3.utils.fromWei(balance, 'ether');
         let instance = null;
-        let instanceWallet = null;
         let deployedNetwork = null;
         if (Counter.networks) {
           deployedNetwork = Counter.networks[networkId.toString()];
@@ -71,13 +67,7 @@ class App extends Component {
           }
         }
         console.log(instance);
-        if (Wallet.networks) {
-          deployedNetwork = Wallet.networks[networkId.toString()];
-          if (deployedNetwork) {
-            instanceWallet = new web3.eth.Contract(Wallet.abi, deployedNetwork && deployedNetwork.address);
-          }
-        }
-        if (instance || instanceWallet) {
+        if (instance) {
           // Set web3, accounts, and contract to the state, and then proceed with an
           // example of interacting with the contract's methods.
           this.setState(
@@ -90,13 +80,12 @@ class App extends Component {
               networkType,
               hotLoaderDisabled,
               isMetaMask,
-              contract: instance,
-              wallet: instanceWallet,
+              contract: instance
             },
             () => {
-              this.refreshValues(instance, instanceWallet);
+              this.refreshValues(instance);
               setInterval(() => {
-                this.refreshValues(instance, instanceWallet);
+                this.refreshValues(instance);
               }, 5000);
             },
           );
@@ -126,12 +115,9 @@ class App extends Component {
     }
   }
 
-  refreshValues = (instance, instanceWallet) => {
+  refreshValues = (instance) => {
     if (instance) {
       this.getCount();
-    }
-    if (instanceWallet) {
-      this.updateTokenOwner();
     }
   };
 
@@ -141,14 +127,6 @@ class App extends Component {
     const response = await contract.methods.count().call();
     // Update state with the result.
     this.setState({ count: response });
-  };
-
-  updateTokenOwner = async () => {
-    const { wallet, accounts } = this.state;
-    // Get the value from the contract to prove it worked.
-    const response = await wallet.methods.owner().call();
-    // Update state with the result.
-    this.setState({ tokenOwner: response.toString() === accounts[0].toString() });
   };
 
   increaseCount = async number => {
@@ -161,12 +139,6 @@ class App extends Component {
     const { accounts, contract } = this.state;
     await contract.methods.decreaseCounter(number).send({ from: accounts[0] });
     this.getCount();
-  };
-
-  renounceOwnership = async number => {
-    const { accounts, wallet } = this.state;
-    await wallet.methods.renounceOwnership().send({ from: accounts[0] });
-    this.updateTokenOwner();
   };
 
   renderLoader() {
@@ -244,34 +216,12 @@ class App extends Component {
     );
   }
 
-  renderEVM() {
-    return (
-      <div className={styles.wrapper}>
-        {!this.state.web3 && this.renderLoader()}
-        {this.state.web3 && !this.state.wallet && this.renderDeployCheck('evm')}
-        {this.state.web3 && this.state.wallet && (
-          <div className={styles.contracts}>
-            <h1>Wallet Contract is good to Go!</h1>
-            <p>Interact with your contract on the right.</p>
-            <p> You can see your account info on the left </p>
-            <div className={styles.widgets}>
-              <Web3Info {...this.state} />
-              <Wallet renounce={this.renounceOwnership} {...this.state} />
-            </div>
-            <Instructions ganacheAccounts={this.state.ganacheAccounts} name="evm" accounts={this.state.accounts} />
-          </div>
-        )}
-      </div>
-    );
-  }
-
   render() {
     return (
       <div className={styles.App}>
         <Header />
         {this.state.route === '' && this.renderInstructions()}
         {this.state.route === 'counter' && this.renderBody()}
-        {this.state.route === 'evm' && this.renderEVM()}
         {this.state.route === 'faq' && this.renderFAQ()}
         <Footer />
       </div>
