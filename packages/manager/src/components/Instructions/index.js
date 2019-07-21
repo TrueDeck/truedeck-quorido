@@ -264,69 +264,6 @@ export default class Instructions extends Component {
     );
   }
 
-  renderEVM() {
-    return (
-      <div className={styles.instructions}>
-        <h2> Using EVM Packages </h2>
-        <p>
-          {' '}
-          ZeppelinOS allows us to link packages that have been already deployed to the blockchain, instead of wasting
-          resources deploying them again every time we need them in a project.{' '}
-        </p>
-        <div className={styles.step}>
-          <div className={styles.instruction}>1. We need the ERC20 standard. Let's grab it from open zeppelin.</div>
-          <div className={styles.code}>
-            <code>zos link openzeppelin-eth</code>
-          </div>
-        </div>
-        <div className={styles.step}>
-          <div className={styles.instruction}>2. Add the Wallet contract to your ZeppelinOS project.</div>
-          <div className={styles.code}>
-            <code>zos add Wallet</code>
-          </div>
-        </div>
-        <div className={styles.step}>
-          <div className={styles.instruction}>4. Push the Wallet and deploy the dependencies (OpenZeppelin EVM).</div>
-          <div className={styles.code}>
-            <code>zos push</code>
-          </div>
-        </div>
-        <div className={styles.step}>
-          <div className={styles.instruction}>
-            5. Create an instance of the wallet, and follow the <span className={styles.inline}>cli</span> prompts. You
-            will want to run the function <code>initialize</code> with your account address {this.props.accounts[0]} as
-            the arguement.
-          </div>
-          <div className={styles.code}>
-            <code>zos create Wallet</code>
-          </div>
-        </div>
-        <div className={styles.step}>
-          <div className={styles.instruction}>6. Congratulations! Your wallet contract should be good to go.</div>
-          <Button onClick={() => window.location.reload()}>Reload</Button>
-        </div>
-        <div className={styles.step}>
-          <div className={styles.instruction}>
-            7. For extra fun, create an instance of the token to use within your wallet. Call the{' '}
-            <code>initialize</code> function again and follow the <span className={styles.inline}>cli</span> prompts to
-            customize your token.
-          </div>
-          <div className={styles.code}>
-            <code>{`zos create openzeppelin-eth/StandaloneERC20`}</code>
-          </div>
-          <p>
-            {' '}
-            Interact with your token directly from the cli.{' '}
-            <a href="https://docs.zeppelinos.org/" target="_blank" rel="noopener noreferrer">
-              Learn more
-            </a>
-            .{' '}
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   getDefaultAddress() {
     const { ganacheAccounts } = this.props;
     return (ganacheAccounts && ganacheAccounts.length) > 2 ? ganacheAccounts[2] : '<ADDRESS>';
@@ -347,8 +284,6 @@ export default class Instructions extends Component {
         return this.renderCounterSetup();
       case 'faq':
         return this.renderFAQ();
-      case 'evm':
-        return this.renderEVM();
       default:
         return this.renderSetup();
     }
