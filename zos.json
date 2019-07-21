@@ -1,7 +1,8 @@
 {
   "zosversion": "2.2",
   "contracts": {
-    "Counter": "Counter"
+    "Counter": "Counter",
+    "Chip": "Chip"
   },
   "dependencies": {},
   "name": "truedeck-quorido",
