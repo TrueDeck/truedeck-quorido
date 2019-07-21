@@ -33,7 +33,7 @@
     "istanbul": "0.4.5",
     "opn-cli": "4.1.0",
     "shx": "0.3.2",
-    "truffle": "5.0.28",
+    "truffle": "5.0.2",
     "web3-provider-engine": "14.1.0",
     "dotenv": "6.2.0",
     "openzeppelin-eth": "2.2.0",
