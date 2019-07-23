@@ -4,7 +4,7 @@ const Chip = artifacts.require('Chip');
 
 const mode = process.env.MODE;
 
-contract('Chip', function ([_, deployer, initialHolder, minterA, minterB, pauserA, pauserB, anyone, ...otherAccounts]) {
+contract('Chip', function ([_, deployer, initialHolder, minterA, minterB, pauserA, pauserB]) {
     const name = 'TChip';
     const symbol = 'TCHIP';
     const decimals = new BN(18);
@@ -14,37 +14,16 @@ contract('Chip', function ([_, deployer, initialHolder, minterA, minterB, pauser
     const minters = [minterA, minterB];
     const pausers = [pauserA, pauserB];
 
-    before(async () => {
-        if (mode === 'profile') {
-            this.chip = await Chip.deployed();
-            await this.chip.initialize(name, symbol, decimals, initialSupply, initialHolder, minters, pausers, { from: deployer });
-        }
-    });
-
-    after('write coverage/profiler output', async () => {
-        if (mode === 'profile') {
-            await global.profilerSubprovider.writeProfilerOutputAsync();
-        } else if (mode === 'coverage') {
+    after('write coverage output', async () => {
+        if (mode === 'coverage') {
             await global.coverageSubprovider.writeCoverageAsync();
         }
     });
 
-    beforeEach(async () => {
-        if (mode === 'profile') {
-            global.profilerSubprovider.start();
-        }
-    });
-
-    afterEach(async () => {
-        if (mode === 'profile') {
-            global.profilerSubprovider.stop();
-        }
-    });
-
-    async function initialize(token, name, symbol, decimals, initialSupply, initialHolder, minters, pausers, from) {
+    async function initialize(contract, name, symbol, decimals, initialSupply, initialHolder, minters, pausers, from) {
         const signature = 'initialize(string,string,uint8,uint256,address,address[],address[])';
         const args = [name, symbol, decimals, initialSupply, initialHolder, minters, pausers];
-        await token.methods[signature](...args, { from });
+        await contract.methods[signature](...args, { from });
     }
 
     if (mode !== 'profile') {
@@ -94,10 +73,6 @@ contract('Chip', function ([_, deployer, initialHolder, minterA, minterB, pauser
                     }
                 });
             });
-        });
-    } else {
-        describe('profile', () => {
-            
         });
     }
 
