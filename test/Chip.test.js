@@ -1,4 +1,5 @@
 const { shouldFail, BN } = require('openzeppelin-test-helpers');
+const { initializeChip } = require('./helpers');
 
 const Chip = artifacts.require('Chip');
 
@@ -20,12 +21,6 @@ contract('Chip', function ([_, deployer, initialHolder, minterA, minterB, pauser
         }
     });
 
-    async function initialize(contract, name, symbol, decimals, initialSupply, initialHolder, minters, pausers, from) {
-        const signature = 'initialize(string,string,uint8,uint256,address,address[],address[])';
-        const args = [name, symbol, decimals, initialSupply, initialHolder, minters, pausers];
-        await contract.methods[signature](...args, { from });
-    }
-
     if (mode !== 'profile') {
         describe('tests/coverage', () => {
             beforeEach(async function () {
@@ -35,20 +30,20 @@ contract('Chip', function ([_, deployer, initialHolder, minterA, minterB, pauser
             context('initializing', async function () {
                 it('reverts if created with no minters', async function () {
                     await shouldFail.reverting(
-                        initialize(this.chip, name, symbol, decimals, initialSupply, initialHolder, [], pausers, deployer)
+                        initializeChip(this.chip, name, symbol, decimals, initialSupply, initialHolder, [], pausers, deployer)
                     );
                 });
 
                 it('reverts if created with no pausers', async function () {
                     await shouldFail.reverting(
-                        initialize(this.chip, name, symbol, decimals, initialSupply, initialHolder, minters, [], deployer)
+                        initializeChip(this.chip, name, symbol, decimals, initialSupply, initialHolder, minters, [], deployer)
                     );
                 });
             });
 
             context('initialized', async function () {
                 beforeEach(async function () {
-                    initialize(this.chip, name, symbol, decimals, initialSupply, initialHolder, minters, pausers, deployer);
+                    initializeChip(this.chip, name, symbol, decimals, initialSupply, initialHolder, minters, pausers, deployer);
                 });
 
                 it('initializes chip metadata', async function () {
