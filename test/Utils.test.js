@@ -188,10 +188,12 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
             });
         });
     } else {
-//        describe("profile", () => {
-//            it("should profile utils contract", async () => {
-//            });
-//        });
+        describe("profile", () => {
+            it("should profile Utils contract", async () => {
+                const b = "0x2f77de4495ddbadade2d06ea9f92873494366c1b4418fbb4b9139eca0b8049498cf382f06c4a4325fa5c8e22e42e6e04b75d0698391a28bb259f931a78446253d965f5817654eaac765a9c571a572e89238f19a420781092eec0d987f1e60b8d01b1a480e40085";
+                await utils.profile(b);
+            });
+        });
     }
 
 });
