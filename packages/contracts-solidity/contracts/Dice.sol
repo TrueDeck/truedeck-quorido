@@ -23,16 +23,19 @@ contract Dice is Initializable, IGame, Manageable, Utils, SignatureBouncer {
         _bankroll = bankroll;
     }
 
+    function isGame() public returns (bool) {
+        return true;
+    }
+
     function deposit(IERC20 token, uint256 amount) external whenNotPaused returns (bool) {
-        _state.increaseBalance(msg.sender, amount);
+        _state._increaseBalance(msg.sender, amount);
         return _bankroll.deposit(token, msg.sender, amount);
     }
 
     function withdraw(
         IERC20 token,
         uint256 amount,
-        uint256[] calldata nonce,
-        uint256[] calldata wonIndexes,
+        uint256 wonIndexes,
         bytes32[] calldata clientSeed,
         bytes32[] calldata serverSeed,
         bytes calldata data,
@@ -42,30 +45,25 @@ contract Dice is Initializable, IGame, Manageable, Utils, SignatureBouncer {
         uint256 _balance = _state._getBalance(msg.sender);
         bytes32 _hash = _state._getHash(msg.sender);
 
-        // Counters and offset
-        uint256 i;  // main counter
-        uint256 wi; // wonIndexes counter
-        uint256 offset = nonce.length * 33;
+        // Counters
+        uint256 i;
 
-        while (i < nonce.length) {
+        while (i < clientSeed.length) {
             bytes memory actionData = new bytes(33);
-            _bytesToBytes(offset, 33, data, actionData);
-            offset = offset.sub(33);
+            _toBytes((clientSeed.length - i) * 33, 33, data, actionData);
 
-            uint256 betAmount = _bytesToUint256(33, actionData);
-            uint8 rollUnder = _bytesToUint8(1, actionData);
-
+            uint256 betAmount = _toUint256(33, actionData);
             _balance = _balance.sub(betAmount);
 
-            if (nonce[i] == wonIndexes[wi]) {
+            if (_getBoolean(wonIndexes, i)) {
                 uint8 randomRoll = uint8(uint256(keccak256(abi.encodePacked(clientSeed[i], serverSeed[i]))) & 255) % 100 + 1;
+                uint8 rollUnder = _toUint8(1, actionData);
                 if (randomRoll < rollUnder) {
                     _balance = _balance.add(betAmount.mul(99).div(rollUnder-1));
                 }
-                ++wi;
             }
 
-            _hash = _calculateGameHash(_hash, nonce[i], clientSeed[i], serverSeed[i], actionData);
+            _hash = _calculateGameHash(_hash, clientSeed[i], serverSeed[i], actionData);
 
             ++i;
         }
