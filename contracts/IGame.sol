@@ -7,7 +7,7 @@ import "openzeppelin-eth/contracts/token/ERC20/IERC20.sol";
 */
 interface IGame {
 
-    function isGame() public returns (bool);
+    function isGame() external returns (bool);
 
     function deposit(IERC20 token, uint256 amount) external returns (bool);
 

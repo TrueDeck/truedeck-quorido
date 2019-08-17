@@ -17,14 +17,14 @@ library Game {
     /**
      * @dev gets the account's balance
      */
-    function _getBalance(State storage state, address account) internal returns (uint256) {
+    function _getBalance(State storage state, address account) internal view returns (uint256) {
         return state.balance[account];
     }
 
     /**
      * @dev gets the account's hash
      */
-    function _getHash(State storage state, address account) internal returns (bytes32) {
+    function _getHash(State storage state, address account) internal view returns (bytes32) {
         return state.hash[account];
     }
 
@@ -55,9 +55,9 @@ library Game {
     /**
      * @dev updates the account's hash
      */
-    function _updateHash(State storage state, address account, byets32 hash) internal {
+    function _updateHash(State storage state, address account, bytes32 hash) internal {
         require(account != address(0));
-        state.balance[account] = hash;
+        state.hash[account] = hash;
     }
 
 }
