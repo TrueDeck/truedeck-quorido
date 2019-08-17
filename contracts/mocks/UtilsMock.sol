@@ -96,4 +96,21 @@ contract UtilsMock is Utils {
         _int256 = _toUint256(68, _bytes2);
     }
 
+    event Profiled(bytes, uint8, uint16, uint32, uint256, bytes32);
+
+    function profile(
+        bytes calldata _input
+    ) external {
+        bytes memory _bytes = new bytes(100);
+        _toBytes(0, 100, _input, _bytes);
+
+        uint8 _int8 = _toUint8(1, _bytes);
+        uint16 _int16 = _toUint16(3, _bytes);
+        uint32 _int32 = _toUint32(7, _bytes);
+        uint256 _int256 = _toUint256(39, _bytes);
+        bytes32 _bytes32 = _toBytes32(39, _bytes);
+
+        emit Profiled(_bytes, _int8, _int16, _int32, _int256, _bytes32);
+    }
+
 }
