@@ -55,7 +55,8 @@ contract Dice is Initializable, IGame, Manageable, Utils, SignatureBouncer {
             uint256 betAmount = _toUint256(33, actionData);
             _balance = _balance.sub(betAmount);
 
-            if (_getBoolean(wonIndexes, i)) {
+            // If won
+            if (((wonIndexes >> i) & uint256(1)) == 1) {
                 uint8 randomRoll = uint8(uint256(keccak256(abi.encodePacked(clientSeed[i], serverSeed[i]))) & 255) % 100 + 1;
                 uint8 rollUnder = _toUint8(1, actionData);
                 if (randomRoll < rollUnder) {
