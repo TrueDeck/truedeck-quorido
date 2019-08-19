@@ -42,6 +42,19 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
     if (mode !== "profile") {
         describe("tests/coverage", () => {
 
+            it("should convert to bool", async () => {
+                const packedBools = new BN("AA", 16);
+
+                (await utils.toBool(packedBools, 0)).should.equal(false);
+                (await utils.toBool(packedBools, 1)).should.equal(true);
+                (await utils.toBool(packedBools, 2)).should.equal(false);
+                (await utils.toBool(packedBools, 3)).should.equal(true);
+                (await utils.toBool(packedBools, 4)).should.equal(false);
+                (await utils.toBool(packedBools, 5)).should.equal(true);
+                (await utils.toBool(packedBools, 6)).should.equal(false);
+                (await utils.toBool(packedBools, 7)).should.equal(true);
+            });
+
             it("should convert bytes to uint8", async () => {
                 // one byte input
                 (await utils.toUint8(1, "0x4")).should.bignumber.equal(new BN("4", 16));
