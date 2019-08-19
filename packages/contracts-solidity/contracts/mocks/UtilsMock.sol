@@ -103,13 +103,18 @@ contract UtilsMock is Utils {
         _int256 = _toUint256(68, _bytes2);
     }
 
-    event Profiled(bytes, uint8, uint16, uint32, uint256, bool, bytes32);
+    event Profiled(bytes32, bytes, uint8, uint16, uint32, uint256, bool, bytes32);
 
     function profile(
-        bytes calldata _input
+        bytes32 prevhash,
+        bytes32 clientSeed,
+        bytes32 serverSeed,
+        bytes calldata data
     ) external {
+        bytes32 _hash = _calculateGameHash(prevhash, clientSeed, serverSeed, data);
+
         bytes memory _bytes = new bytes(100);
-        _toBytes(0, 100, _input, _bytes);
+        _toBytes(0, 100, data, _bytes);
 
         uint8 _int8 = _toUint8(1, _bytes);
         uint16 _int16 = _toUint16(3, _bytes);
@@ -118,7 +123,7 @@ contract UtilsMock is Utils {
         bool _bool = _toBool(_int256, 255);
         bytes32 _bytes32 = _toBytes32(39, _bytes);
 
-        emit Profiled(_bytes, _int8, _int16, _int32, _int256, _bool, _bytes32);
+        emit Profiled(_hash, _bytes, _int8, _int16, _int32, _int256, _bool, _bytes32);
     }
 
 }

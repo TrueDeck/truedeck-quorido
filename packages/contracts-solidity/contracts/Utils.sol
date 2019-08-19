@@ -14,8 +14,8 @@ contract Utils {
         bytes32 _serverSeed,
         bytes memory _data
     ) internal pure returns (bytes32 _hash) {
-        _hash = keccak256(abi.encodePacked(_clientSeed, _data));
-        _hash = keccak256(abi.encodePacked(_prevhash, _hash, _serverSeed));
+        _hash = keccak256(abi.encode(_clientSeed, _data));
+        _hash = keccak256(abi.encode(_prevhash, _hash, _serverSeed));
     }
 
     function _toBool(
