@@ -22,6 +22,13 @@ contract UtilsMock is Utils {
         );
     }
 
+    function toBool(
+        uint8 _packedBools,
+        uint8 _boolNumber
+    ) external pure returns (bool) {
+        return _toBool(_packedBools, _boolNumber);
+    }
+
     function toUint8(
         uint256 _offst,
         bytes calldata _input
@@ -50,6 +57,13 @@ contract UtilsMock is Utils {
         return _toUint256(_offst, _input);
     }
 
+    function toBytes32(
+        uint256 _offst,
+        bytes calldata _input
+    ) external pure returns (bytes32) {
+        return _toBytes32(_offst, _input);
+    }
+
     function toBytes(
         uint256 _offst,
         uint256 _nBytes,
@@ -62,13 +76,6 @@ contract UtilsMock is Utils {
             _input,
             _output
         );
-    }
-
-    function toBytes32(
-        uint256 _offst,
-        bytes calldata _input
-    ) external pure returns (bytes32) {
-        return _toBytes32(_offst, _input);
     }
 
     function deserialize(
@@ -96,7 +103,7 @@ contract UtilsMock is Utils {
         _int256 = _toUint256(68, _bytes2);
     }
 
-    event Profiled(bytes, uint8, uint16, uint32, uint256, bytes32);
+    event Profiled(bytes, uint8, uint16, uint32, uint256, bool, bytes32);
 
     function profile(
         bytes calldata _input
@@ -108,9 +115,10 @@ contract UtilsMock is Utils {
         uint16 _int16 = _toUint16(3, _bytes);
         uint32 _int32 = _toUint32(7, _bytes);
         uint256 _int256 = _toUint256(39, _bytes);
+        bool _bool = _toBool(_int256, 255);
         bytes32 _bytes32 = _toBytes32(39, _bytes);
 
-        emit Profiled(_bytes, _int8, _int16, _int32, _int256, _bytes32);
+        emit Profiled(_bytes, _int8, _int16, _int32, _int256, _bool, _bytes32);
     }
 
 }
