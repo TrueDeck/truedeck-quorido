@@ -2,10 +2,6 @@ pragma solidity ^0.5.0;
 
 import "../Utils.sol";
 
-/**
- * @title Utils
- * @dev Contract having pure utility methods.
- */
 contract UtilsMock is Utils {
 
     function calculateGameHash(
