@@ -25,6 +25,12 @@ contract WithdrawerRole is Initializable, Ownable {
         _;
     }
 
+    modifier onlyGame(address account) {
+        IGame game = IGame(account);
+        require(game.isGame());
+        _;
+    }
+
     function initialize(address sender) public initializer {
         Ownable.initialize(sender);
     }
@@ -33,7 +39,7 @@ contract WithdrawerRole is Initializable, Ownable {
         return _withdrawers.has(account);
     }
 
-    function addWithdrawer(address account) public onlyOwner {
+    function addWithdrawer(address account) public onlyOwner onlyGame(account) {
         _addWithdrawer(account);
     }
 
@@ -46,9 +52,6 @@ contract WithdrawerRole is Initializable, Ownable {
     }
 
     function _addWithdrawer(address account) internal {
-        IGame game = IGame(account);
-        require(game.isGame());
-
         _withdrawers.add(account);
         emit WithdrawerAdded(account);
     }
