@@ -14,8 +14,7 @@ interface IGame {
     function withdraw(
         IERC20 token,
         uint256 amount,
-        uint256[] calldata nonce,
-        uint256[] calldata wonIndexes,
+        uint256 wonIndexes,
         bytes32[] calldata clientSeed,
         bytes32[] calldata serverSeed,
         bytes calldata data,
