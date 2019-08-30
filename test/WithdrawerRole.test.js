@@ -29,13 +29,16 @@ contract('WithdrawerRole', function ([_, owner, ...otherAccounts]) {
 
                 const contractAddress = this.contract.address;
 
-                this.gameContract = (await GameMock.new(contractAddress, { from: owner }));
+                this.gameContract = (await GameMock.new({ from: owner }));
+                await this.gameContract.setWithdrawerRoleMock(contractAddress);
                 withdrawer = this.gameContract.address;
 
-                this.otherGameContract = (await GameMock.new(contractAddress, { from: owner }));
+                this.otherGameContract = (await GameMock.new({ from: owner }));
+                await this.otherGameContract.setWithdrawerRoleMock(contractAddress);
                 otherWithdrawer = this.otherGameContract.address;
 
-                this.anyGameContract = (await GameMock.new(contractAddress, { from: owner }));
+                this.anyGameContract = (await GameMock.new({ from: owner }));
+                await this.anyGameContract.setWithdrawerRoleMock(contractAddress);
                 anygame = this.anyGameContract.address;
 
                 await this.contract.addWithdrawer(withdrawer, { from: owner });
