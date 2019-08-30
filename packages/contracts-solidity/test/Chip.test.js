@@ -1,5 +1,6 @@
 const { shouldFail, BN } = require('openzeppelin-test-helpers');
 const { initializeChip } = require('./helpers');
+const should = require('chai').should();
 
 const Chip = artifacts.require('Chip');
 
@@ -24,7 +25,7 @@ contract('Chip', function ([_, deployer, initialHolder, minterA, minterB, pauser
     if (mode !== 'profile') {
         describe('tests/coverage', () => {
             beforeEach(async function () {
-                this.chip = await Chip.new({from: deployer});
+                this.chip = await Chip.new({ from: deployer });
             });
 
             context('initializing', async function () {

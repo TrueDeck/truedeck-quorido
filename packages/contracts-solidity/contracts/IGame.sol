@@ -21,11 +21,9 @@ interface IGame {
         bytes calldata proof
     ) external returns (bool);
 
-    event Withdrawal(
+    event Proved(
         address indexed player,
-        bytes proof,
-        uint256 amount,
-        uint256 balance
+        bytes proof
     );
 
 }

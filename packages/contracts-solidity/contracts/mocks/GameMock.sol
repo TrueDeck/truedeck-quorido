@@ -2,13 +2,24 @@ pragma solidity ^0.5.0;
 
 import "../IGame.sol";
 import "./WithdrawerRoleMock.sol";
+import "../Bankroll.sol";
 
 contract GameMock is IGame {
 
     WithdrawerRoleMock private _withdrawerRoleMock;
 
-    constructor (WithdrawerRoleMock withdrawerRoleMock) public {
+    Bankroll private _bankroll;
+
+    constructor () public {
+
+    }
+
+    function setWithdrawerRoleMock(WithdrawerRoleMock withdrawerRoleMock) public {
         _withdrawerRoleMock = withdrawerRoleMock;
+    }
+
+    function setBankroll(Bankroll bankroll) public {
+        _bankroll = bankroll;
     }
 
     function isGame() external returns (bool) {
@@ -23,10 +34,8 @@ contract GameMock is IGame {
         _withdrawerRoleMock.renounceWithdrawer();
     }
 
-    // Vague implementations to supress unused variable warnings
     function deposit(IERC20 token, uint256 amount) external returns (bool) {
-        keccak256(abi.encode(address(token), amount));
-        return false;
+        return _bankroll.deposit(token, msg.sender, amount);
     }
 
     function withdraw(
@@ -38,7 +47,8 @@ contract GameMock is IGame {
         bytes calldata data,
         bytes calldata proof
     ) external returns (bool) {
-        keccak256(abi.encode(address(token), amount, wonIndexes, clientSeed, serverSeed, data, proof));
-        return false;
+        keccak256(abi.encode(wonIndexes, clientSeed, serverSeed, data, proof));
+        emit Proved(msg.sender, proof);
+        return _bankroll.withdraw(token, msg.sender, amount);
     }
 }
