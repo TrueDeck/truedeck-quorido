@@ -10,12 +10,10 @@ contract Utils {
 
     function _calculateGameHash(
         bytes32 _prevhash,
-        bytes32 _clientSeed,
         bytes32 _serverSeed,
-        bytes memory _data
+        bytes memory _clientData
     ) internal pure returns (bytes32 _hash) {
-        _hash = keccak256(abi.encode(_clientSeed, _data));
-        _hash = keccak256(abi.encode(_prevhash, _hash, _serverSeed));
+        _hash = keccak256(abi.encode(_prevhash, _serverSeed, _clientData));
     }
 
     function _toBool(

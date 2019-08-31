@@ -22,7 +22,7 @@ contract GameMock is IGame {
         _bankroll = bankroll;
     }
 
-    function isGame() external returns (bool) {
+    function isGame() external pure returns (bool) {
         return true;
     }
 
@@ -41,13 +41,10 @@ contract GameMock is IGame {
     function withdraw(
         IERC20 token,
         uint256 amount,
-        uint256 wonIndexes,
-        bytes32[] calldata clientSeed,
-        bytes32[] calldata serverSeed,
         bytes calldata data,
         bytes calldata proof
     ) external returns (bool) {
-        keccak256(abi.encode(wonIndexes, clientSeed, serverSeed, data, proof));
+        keccak256(abi.encode(data, proof));
         emit Proved(msg.sender, proof);
         return _bankroll.withdraw(token, msg.sender, amount);
     }

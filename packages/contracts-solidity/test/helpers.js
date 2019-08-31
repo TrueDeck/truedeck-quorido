@@ -11,18 +11,22 @@ async function initializeBankroll(contract, owner, from) {
     await contract.methods[signature](...args, { from });
 }
 
-function calculateGameHash(prevhash, clientSeed, serverSeed, data) {
-    const clientHash = web3.utils.keccak256(web3.eth.abi.encodeParameters(
-                            ["bytes32", "bytes"],
-                            [clientSeed, data]));
+async function initializeDice(contract, owner, signer, bankroll, from) {
+    const signature = 'initialize(address,address,address)';
+    const args = [owner, signer, bankroll];
+    await contract.methods[signature](...args, { from });
+}
+
+function calculateGameHash(prevhash, serverSeed, clientData) {
     const gamehash = web3.utils.keccak256(web3.eth.abi.encodeParameters(
-                            ["bytes32", "bytes32", "bytes32"],
-                            [prevhash, clientHash, serverSeed]));
+                            ["bytes32", "bytes32", "bytes"],
+                            [prevhash, serverSeed, clientData]));
     return gamehash;
 }
 
 module.exports = {
     initializeChip,
     initializeBankroll,
+    initializeDice,
     calculateGameHash
 };
