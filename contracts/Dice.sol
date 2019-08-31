@@ -23,7 +23,7 @@ contract Dice is Initializable, IGame, Manageable, Utils, SignatureBouncer {
         _bankroll = bankroll;
     }
 
-    function isGame() public returns (bool) {
+    function isGame() external pure returns (bool) {
         return true;
     }
 
@@ -35,9 +35,6 @@ contract Dice is Initializable, IGame, Manageable, Utils, SignatureBouncer {
     function withdraw(
         IERC20 token,
         uint256 amount,
-        uint256 wonIndexes,
-        bytes32[] calldata clientSeed,
-        bytes32[] calldata serverSeed,
         bytes calldata data,
         bytes calldata proof
     ) external whenNotPaused returns (bool) {
@@ -45,29 +42,35 @@ contract Dice is Initializable, IGame, Manageable, Utils, SignatureBouncer {
         uint256 _balance = _state._getBalance(msg.sender);
         bytes32 _hash = _state._getHash(msg.sender);
 
-        // Counters
-        uint256 i;
+        // Offset & Flags
+        uint256 offset;
+        uint8 flags;
 
-        while (i < clientSeed.length) {
-            bytes memory actionData = new bytes(33);
-            _toBytes((clientSeed.length - i) * 33, 33, data, actionData);
+        do {
+            bytes memory clientData = new bytes(65);
+            _toBytes(offset, 65, data, clientData);
 
-            uint256 betAmount = _toUint256(33, actionData);
+            flags = _toUint8(offset+98, data);
+
+            uint256 betAmount = _toUint256(64, clientData);
             _balance = _balance.sub(betAmount);
 
+            bytes32 clientSeed = _toBytes32(0, clientData);
+            bytes32 serverSeed = _toBytes32(offset+65, data);
+
             // If won
-            if (((wonIndexes >> i) & uint256(1)) == 1) {
-                uint8 randomRoll = uint8(uint256(keccak256(abi.encodePacked(clientSeed[i], serverSeed[i]))) & 255) % 100 + 1;
-                uint8 rollUnder = _toUint8(1, actionData);
+            if (((flags >> 1) & uint256(1)) == 1) {
+                uint8 randomRoll = uint8(uint256(keccak256(abi.encodePacked(clientSeed, serverSeed))) & 255) % 100 + 1;
+                uint8 rollUnder = _toUint8(65, clientData);
                 if (randomRoll < rollUnder) {
                     _balance = _balance.add(betAmount.mul(99).div(rollUnder-1));
                 }
             }
 
-            _hash = _calculateGameHash(_hash, clientSeed[i], serverSeed[i], actionData);
+            _hash = _calculateGameHash(_hash, serverSeed, clientData);
 
-            ++i;
-        }
+            offset = offset + 98;
+        } while ((flags & uint256(1)) == 1);
 
         require(_isValidDataHash(_hash, proof));
         _state._updateHash(msg.sender, _hash);
@@ -77,7 +80,7 @@ contract Dice is Initializable, IGame, Manageable, Utils, SignatureBouncer {
 
         _bankroll.withdraw(token, msg.sender, amount);
 
-        emit Withdrawal(msg.sender, proof, amount, _balance);
+        emit Proved(msg.sender, proof);
 
         return true;
     }

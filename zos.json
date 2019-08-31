@@ -1,7 +1,6 @@
 {
   "zosversion": "2.2",
   "contracts": {
-    "Counter": "Counter",
     "Chip": "Chip",
     "Dice": "Dice"
   },
