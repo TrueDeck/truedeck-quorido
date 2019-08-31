@@ -6,15 +6,13 @@ contract UtilsMock is Utils {
 
     function calculateGameHash(
         bytes32 prevhash,
-        bytes32 clientSeed,
         bytes32 serverSeed,
-        bytes calldata data
+        bytes calldata clientData
     ) external pure returns (bytes32 hash) {
         return _calculateGameHash(
             prevhash,
-            clientSeed,
             serverSeed,
-            data
+            clientData
         );
     }
 
@@ -103,11 +101,10 @@ contract UtilsMock is Utils {
 
     function profile(
         bytes32 prevhash,
-        bytes32 clientSeed,
         bytes32 serverSeed,
         bytes calldata data
     ) external {
-        bytes32 _hash = _calculateGameHash(prevhash, clientSeed, serverSeed, data);
+        bytes32 _hash = _calculateGameHash(prevhash, serverSeed, data);
 
         bytes memory _bytes = new bytes(100);
         _toBytes(0, 100, data, _bytes);

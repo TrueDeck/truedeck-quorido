@@ -45,28 +45,24 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
 
             it("should calculate game hash", async () => {
                 const h1 = "0xc5ee48380eecc4832905500b23878950f5c00bf985086a4552d31285fcaf4519";
-                const c1 = "0xfb3a08bc90a8964b7436cc3573a4e82f386eca38fa150e81a8ddec0c2c7bd5ae";
                 const s1 = "0x456d291cf53f3dd1c67766843c3867d8946b7ad1b8eda2eb92c774c3dad3f2e0";
                 const d1 = "0xdc36d162f7ffbbfd1a7cc5794a5fe902b8afbf09fa2e2a9299cf8ebf1af15975ac0f19c8ba83a4307d1250b130c892ac8a2c30f6b174fc1e849f5fb1511d4eff";
 
                 const h2 = "0xb16222d190976de424b241214ce31f32ab305193b859bab01e21d449d52a60f1";
-                const c2 = "0x794969a292881b4bdc841b7e52018a236dbd032d754f636c9d86ab70b31eb7d5";
                 const s2 = "0x59afb1bebacc47df2019ef37652eccd0126f99658cbc5627a08f4b1f14571d0a";
                 const d2 = "0x15adf883fa0c69294e491461620bc7da919a65adb3e9d8ce7b9686cb1b9135913b5d3a4f2853fbbceae7aa504c0f0f1d0d2f733c2afe72990687eeaec4eab8b6";
 
                 const h3 = "0x8ba81c8c2185a2b272c7bb452631f7e62742319a7f139dd07b85dd8a9f2e81eb";
-                const c3 = "0x24962d7c82459c704b500ee0068e893ec302703b3080f2077a4215f7cc7e0396";
                 const s3 = "0x9337c0e3115c207da2aba79a6e2f0268cd8d2517125b989421c951edf8f4f5d2";
                 const d3 = "0x4b7b4baaa2f39fc6cd43fa83f4456b23672accd2f1e5c755d85b4c2429d71337ec815e15202722e4c27d07cd721234db7ac9029b7f5d1ff2f48337b3c9c96f48";
 
                 const h = [h1, h2, h3];
-                const c = [c1, c2, c3];
                 const s = [s1, s2, s3];
                 const d = [d1, d2, d3];
 
                 for (let i = 0; i < h.length; i++) {
-                    const actual = await utils.calculateGameHash(h[i], c[i], s[i], d[i]);
-                    const expected = calculateGameHash(h[i], c[i], s[i], d[i]);
+                    const actual = await utils.calculateGameHash(h[i], s[i], d[i]);
+                    const expected = calculateGameHash(h[i], s[i], d[i]);
                     actual.should.equal(expected);
                 }
             });
@@ -233,10 +229,9 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
         describe("profile", () => {
             it("should profile Utils contract", async () => {
                 const h = "0xb16222d190976de424b241214ce31f32ab305193b859bab01e21d449d52a60f1";
-                const c = "0x794969a292881b4bdc841b7e52018a236dbd032d754f636c9d86ab70b31eb7d5";
                 const s = "0x59afb1bebacc47df2019ef37652eccd0126f99658cbc5627a08f4b1f14571d0a";
                 const d = "0x2f77de4495ddbadade2d06ea9f92873494366c1b4418fbb4b9139eca0b8049498cf382f06c4a4325fa5c8e22e42e6e04b75d0698391a28bb259f931a78446253d965f5817654eaac765a9c571a572e89238f19a420781092eec0d987f1e60b8d01b1a480e40085";
-                await utils.profile(h, c, s, d);
+                await utils.profile(h, s, d);
             });
         });
     }
