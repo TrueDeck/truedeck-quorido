@@ -27,6 +27,10 @@ contract Dice is Initializable, IGame, Manageable, Utils, SignatureBouncer {
         return true;
     }
 
+    function balanceOf(address player) external view returns (uint256) {
+        return _state._getBalance(player);
+    }
+
     function deposit(IERC20 token, uint256 amount) external whenNotPaused returns (bool) {
         _state._increaseBalance(msg.sender, amount);
         return _bankroll.deposit(token, msg.sender, amount);

@@ -1,14 +1,17 @@
 pragma solidity ^0.5.0;
 
+import "../Game.sol";
 import "../IGame.sol";
 import "./WithdrawerRoleMock.sol";
 import "../Bankroll.sol";
 
 contract GameMock is IGame {
+    using Game for Game.State;
 
     WithdrawerRoleMock private _withdrawerRoleMock;
 
     Bankroll private _bankroll;
+    Game.State private _state;
 
     constructor () public {
 
@@ -26,6 +29,10 @@ contract GameMock is IGame {
         return true;
     }
 
+    function balanceOf(address player) external view returns (uint256) {
+        return _state._getBalance(player);
+    }
+
     function onlyWithdrawerMock() external view {
         _withdrawerRoleMock.onlyWithdrawerMock();
     }
@@ -35,6 +42,7 @@ contract GameMock is IGame {
     }
 
     function deposit(IERC20 token, uint256 amount) external returns (bool) {
+        _state._increaseBalance(msg.sender, amount);
         return _bankroll.deposit(token, msg.sender, amount);
     }
 
@@ -46,6 +54,7 @@ contract GameMock is IGame {
     ) external returns (bool) {
         keccak256(abi.encode(data, proof));
         emit Proved(msg.sender, proof);
+        _state._updateBalance(msg.sender, 0);
         return _bankroll.withdraw(token, msg.sender, amount);
     }
 }
