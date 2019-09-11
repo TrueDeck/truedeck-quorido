@@ -8,8 +8,8 @@ import "./ManagerRole.sol";
  * @dev Base contract which allows children to implement manageable operations.
  */
 contract Manageable is Initializable, ManagerRole {
-    event Paused(address account);
-    event Unpaused(address account);
+    event Paused(address indexed account);
+    event Unpaused(address indexed account);
 
     bool private _paused;
 

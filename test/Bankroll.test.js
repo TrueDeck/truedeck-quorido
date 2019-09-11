@@ -132,6 +132,17 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                                 (await this.chip.balanceOf(player)).should.be.bignumber.equal(initialBalance);
                             });
 
+                            context('when paused', function () {
+                                beforeEach(async function () {
+                                    await this.bankroll.pause({ from: managerA });
+                                    (await this.bankroll.paused()).should.equal(true);
+                                });
+
+                                it('reverts', async function () {
+                                    await shouldFail.reverting(this.gameContract.deposit(token, depositAmount, { from: player }));
+                                });
+                            });
+
                             context('when unpaused', function () {
                                 beforeEach(async function () {
                                     (await this.bankroll.paused()).should.equal(false);
@@ -171,17 +182,6 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                                     });
                                 });
                             });
-
-                            context('when paused', function () {
-                                beforeEach(async function () {
-                                    await this.bankroll.pause({ from: managerA });
-                                    (await this.bankroll.paused()).should.equal(true);
-                                });
-
-                                it('reverts', async function () {
-                                    await shouldFail.reverting(this.gameContract.deposit(token, depositAmount, { from: player }));
-                                });
-                            });
                         });
                     });
                 });
@@ -199,6 +199,18 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                         beforeEach(async function() {
                             await this.chip.transfer(spender, initialBankroll, { from: initialHolder });
                             (await this.chip.balanceOf(spender)).should.be.bignumber.equal(initialBankroll);
+                        });
+
+                        context('when paused', function () {
+                            beforeEach(async function () {
+                                await this.bankroll.pause({ from: managerA });
+                                (await this.bankroll.paused()).should.equal(true);
+                            });
+
+                            it('reverts', async function () {
+                                await shouldFail.reverting(this.gameContract.withdraw(
+                                    token, withdrawAmount, "0x0", "0x0", { from: player }));
+                            });
                         });
 
                         context('when unpaused', function () {
@@ -241,18 +253,6 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                                     player: player,
                                     proof: "0x123456"
                                 });
-                            });
-                        });
-
-                        context('when paused', function () {
-                            beforeEach(async function () {
-                                await this.bankroll.pause({ from: managerA });
-                                (await this.bankroll.paused()).should.equal(true);
-                            });
-
-                            it('reverts', async function () {
-                                await shouldFail.reverting(this.gameContract.withdraw(
-                                    token, withdrawAmount, "0x0", "0x0", { from: player }));
                             });
                         });
                     });
