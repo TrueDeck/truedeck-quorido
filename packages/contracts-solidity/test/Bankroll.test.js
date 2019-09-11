@@ -126,7 +126,7 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                             });
                         });
 
-                        describe('when the player have enough balance', function () {
+                        describe('when the player has enough balance', function () {
                             beforeEach(async function () {
                                 await this.chip.transfer(player, initialBalance, { from: initialHolder });
                                 (await this.chip.balanceOf(player)).should.be.bignumber.equal(initialBalance);
@@ -140,8 +140,9 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                                 it('deposits the requested amount', async function () {
                                     await this.gameContract.deposit(token, depositAmount, { from: player });
 
-                                    (await this.chip.balanceOf(player)).should.be.bignumber.equal(initialBalance.sub(depositAmount));
+                                    (await this.gameContract.balanceOf(player)).should.be.bignumber.equal(depositAmount);
                                     (await this.chip.balanceOf(spender)).should.be.bignumber.equal(depositAmount);
+                                    (await this.chip.balanceOf(player)).should.be.bignumber.equal(initialBalance.sub(depositAmount));
                                 });
 
                                 it('decreases the spender allowance', async function () {
@@ -187,7 +188,7 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
 
                 describe('withdrawal', function () {
 
-                    describe('when the bankroll does not have enough balance', function () {
+                    describe('when the bankroll does not has enough balance', function () {
                         it('reverts', async function () {
                             await shouldFail.reverting(this.gameContract.withdraw(
                                 token, withdrawAmount, "0x0", "0x0", { from: player }));
@@ -216,6 +217,7 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                                 await this.gameContract.withdraw(
                                     token, withdrawAmount, "0x0", "0x0", { from: player });
 
+                                (await this.gameContract.balanceOf(player)).should.be.bignumber.equal(zeroAmount);
                                 (await this.chip.balanceOf(player)).should.be.bignumber.equal(withdrawAmount);
                                 (await this.chip.balanceOf(spender)).should.be.bignumber.equal(initialBankroll.sub(withdrawAmount));
                             });

@@ -9,6 +9,8 @@ interface IGame {
 
     function isGame() external pure returns (bool);
 
+    function balanceOf(address player) external view returns (uint256);
+
     function deposit(IERC20 token, uint256 amount) external returns (bool);
 
     function withdraw(
