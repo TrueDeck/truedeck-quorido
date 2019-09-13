@@ -18,7 +18,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
     const initialBankroll = new BN(30000);
     const approveAmount = new BN(5000);
     const depositAmount = new BN(1000);
-    const withdrawAmount = new BN(15000);
+    const withdrawAmount = new BN(1500);
     const zeroAmount = new BN(0);
 
     const initialHolder = owner;
@@ -224,6 +224,8 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                             });
 
                             describe('game tests', function () {
+                                const prevHash = "0000000000000000000000000000000000000000000000000000000000000000";
+
                                 beforeEach(async function () {
                                     // Player has enough balance
                                     await this.chip.transfer(player, initialBalance, { from: initialHolder });
@@ -239,27 +241,73 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
 
                                 describe('a simple game', function () {
 
-                                    it('withdraws the requested amount', async function () {
-                                        const prevHash = "0000000000000000000000000000000000000000000000000000000000000000";
-                                        const clientSeed = "df0ea096b54fc7ef48f679c094fe2f3ff2af2dd75a228fe719e9868004a11f1a";
-                                        const betAmount = "0000000000000000000000000000000000000000000000056bc75e2d63100000";
-                                        const rollUnder = "0A";
-                                        const serverSeed = "75f82f273177f1760120a0fb29e5572d031723dd955af840438fc7ea44d6e994";
-                                        const flags = "02";
+                                    // Random Roll = 4
+                                    const clientSeed = "df0ea096b54fc7ef48f679c094fe2f3ff2af2dd75a228fe719e9868004a11f15";
+                                    const serverSeed = "75f82f273177f1760120a0fb29e5572d031723dd955af840438fc7ea44d6e994";
 
-                                        const clientData = clientSeed + betAmount + rollUnder;
-                                        const data = "0x" + clientData + serverSeed + flags;
-                                        const gamehash = calculateGameHash("0x"+prevHash, "0x"+serverSeed, "0x"+clientData);
+                                    // Bet Amount = 100
+                                    const betAmount = "0000000000000000000000000000000000000000000000000000000000000064";
+                                    const betAmountBN = new BN(100);
+
+                                    // Roll Under = 10
+                                    const rollUnder = "0A";
+
+                                    // Flags = ... | WON | EOG | = 0000 0010 = 2
+                                    const flags = "02";
+
+                                    // Payout = betAmount * 99 / (rollUnder - 1)
+                                    const payout = new BN(100 * 99 / (10 - 1));
+
+                                    const clientData = clientSeed + betAmount + rollUnder;
+                                    const data = "0x" + clientData + serverSeed + flags;
+                                    const gamehash = calculateGameHash("0x"+prevHash, "0x"+serverSeed, "0x"+clientData);
+
+                                    it('withdraws the requested amount', async function () {
                                         const proof = await signMessage(signer, gamehash);
 
+                                        // Withdraw Transaction
                                         await this.dice.withdraw(this.chip.address, withdrawAmount, data, proof, { from: player });
+
+                                        // Assertions
+                                        const expectedDiceBalanceOfPlayer = depositAmount.sub(betAmountBN).add(payout).sub(withdrawAmount);
+                                        (await this.dice.balanceOf(player)).should.be.bignumber.equal(expectedDiceBalanceOfPlayer);
+
+                                        const expectedBankrollBalance = initialBankroll.add(depositAmount).sub(withdrawAmount);
+                                        (await this.chip.balanceOf(this.bankroll.address)).should.be.bignumber.equal(expectedBankrollBalance);
+
+                                        const expectedPlayerBalance = initialBalance.sub(depositAmount).add(withdrawAmount);
+                                        (await this.chip.balanceOf(player)).should.be.bignumber.equal(expectedPlayerBalance);
+                                    });
+
+                                    it('emits a transfer event', async function () {
+                                        const proof = await signMessage(signer, gamehash);
+
+                                        // Withdraw Transaction
+                                        const receipt = await this.dice.withdraw(this.chip.address, withdrawAmount, data, proof, { from: player });
+
+                                        expectEvent.inTransaction(receipt.tx, Chip, 'Transfer', {
+                                            from: this.bankroll.address,
+                                            to: player,
+                                            value: withdrawAmount,
+                                        });
+                                    });
+
+                                    it('emits a proved event', async function () {
+                                        const proof = await signMessage(signer, gamehash);
+
+                                        // Withdraw Transaction
+                                        const { logs } = await this.dice.withdraw(this.chip.address, withdrawAmount, data, proof, { from: player });
+
+                                        expectEvent.inLogs(logs, 'Proved', {
+                                            player: player,
+                                            gamehash: gamehash
+                                        });
                                     });
                                 });
                             });
                         });
                     });
                 });
-
             });
         });
     } else {
