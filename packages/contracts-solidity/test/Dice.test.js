@@ -1,5 +1,5 @@
 const { BN, constants, expectEvent, shouldFail } = require('openzeppelin-test-helpers');
-const { initializeBankroll, initializeChip, initializeDice } = require('./helpers');
+const { initializeBankroll, initializeChip, initializeDice, calculateGameHash, signMessage } = require('./helpers');
 const should = require('chai').should();
 
 const Bankroll = artifacts.require('Bankroll');
@@ -80,6 +80,10 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                 it('owner has the owner role', async function () {
                     (await this.dice.isOwner({ from: owner })).should.equal(true);
                     (await this.bankroll.isOwner({ from: owner })).should.equal(true);
+                });
+
+                it('signer has the signer role', async function () {
+                    (await this.dice.isSigner(signer)).should.equal(true);
                 });
 
                 it('manager has the manager role', async function () {
@@ -214,12 +218,45 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                             });
                         });
 
-//                        context('when unpaused', function () {
-//                            beforeEach(async function () {
-//                                (await this.bankroll.paused()).should.equal(false);
-//                            });
-//
-//                        });
+                        context('when unpaused', function () {
+                            beforeEach(async function () {
+                                (await this.bankroll.paused()).should.equal(false);
+                            });
+
+                            describe('game tests', function () {
+                                beforeEach(async function () {
+                                    // Player has enough balance
+                                    await this.chip.transfer(player, initialBalance, { from: initialHolder });
+                                    (await this.chip.balanceOf(player)).should.be.bignumber.equal(initialBalance);
+
+                                    // Player deposits an amount
+                                    await this.chip.approve(this.bankroll.address, approveAmount, { from: player });
+                                    await this.dice.deposit(this.chip.address, depositAmount, { from: player });
+                                    (await this.dice.balanceOf(player)).should.be.bignumber.equal(depositAmount);
+                                    (await this.chip.balanceOf(this.bankroll.address)).should.be.bignumber.equal(initialBankroll.add(depositAmount));
+                                    (await this.chip.balanceOf(player)).should.be.bignumber.equal(initialBalance.sub(depositAmount));
+                                });
+
+                                describe('a simple game', function () {
+
+                                    it('withdraws the requested amount', async function () {
+                                        const prevHash = "0000000000000000000000000000000000000000000000000000000000000000";
+                                        const clientSeed = "df0ea096b54fc7ef48f679c094fe2f3ff2af2dd75a228fe719e9868004a11f1a";
+                                        const betAmount = "0000000000000000000000000000000000000000000000056bc75e2d63100000";
+                                        const rollUnder = "0A";
+                                        const serverSeed = "75f82f273177f1760120a0fb29e5572d031723dd955af840438fc7ea44d6e994";
+                                        const flags = "02";
+
+                                        const clientData = clientSeed + betAmount + rollUnder;
+                                        const data = "0x" + clientData + serverSeed + flags;
+                                        const gamehash = calculateGameHash("0x"+prevHash, "0x"+serverSeed, "0x"+clientData);
+                                        const proof = await signMessage(signer, gamehash);
+
+                                        await this.dice.withdraw(this.chip.address, withdrawAmount, data, proof, { from: player });
+                                    });
+                                });
+                            });
+                        });
                     });
                 });
 
