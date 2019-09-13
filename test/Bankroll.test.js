@@ -246,10 +246,10 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                             });
 
                             it('emits a proved event', async function () {
-                                const receipt = await this.gameContract.withdraw(
+                                const { logs } = await this.gameContract.withdraw(
                                     token, withdrawAmount, "0x0", "0x123456", { from: player });
 
-                                expectEvent.inTransaction(receipt.tx, GameMock, 'Proved', {
+                                expectEvent.inLogs(logs, 'Proved', {
                                     player: player,
                                     gamehash: "0xbc36789e7a1e281436464229828f817d6612f7b477d66591ff96a9e064bcc98a"
                                 });
