@@ -84,7 +84,7 @@ contract Dice is Initializable, IGame, Manageable, Utils, SignatureBouncer {
 
         _bankroll.withdraw(token, msg.sender, amount);
 
-        emit Proved(msg.sender, proof);
+        emit Proved(msg.sender, _hash);
 
         return true;
     }

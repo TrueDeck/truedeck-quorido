@@ -22,7 +22,7 @@ interface IGame {
 
     event Proved(
         address indexed player,
-        bytes proof
+        bytes32 gamehash
     );
 
 }

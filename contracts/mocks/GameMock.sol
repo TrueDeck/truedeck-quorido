@@ -53,7 +53,7 @@ contract GameMock is IGame {
         bytes calldata proof
     ) external returns (bool) {
         keccak256(abi.encode(data, proof));
-        emit Proved(msg.sender, proof);
+        emit Proved(msg.sender, keccak256(data));
         _state._updateBalance(msg.sender, 0);
         return _bankroll.withdraw(token, msg.sender, amount);
     }
