@@ -25,14 +25,14 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
     const minters = [minter];
     const pausers = [pauser];
 
-    after('write coverage output', async () => {
+    after('write coverage output', async function () {
         if (mode === 'coverage') {
             await global.coverageSubprovider.writeCoverageAsync();
         }
     });
 
     if (mode !== 'profile') {
-        describe('tests/coverage', () => {
+        describe('tests/coverage', function () {
             let token;
             let spender;
             let withdrawer;
@@ -116,7 +116,7 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                     });
 
                     describe('when the spender has enough approved balance', function () {
-                        beforeEach(async function() {
+                        beforeEach(async function () {
                             await this.chip.approve(spender, approveAmount, { from: player });
                         });
 
@@ -196,7 +196,7 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                     });
 
                     describe('when the bankroll has enough balance', function () {
-                        beforeEach(async function() {
+                        beforeEach(async function () {
                             await this.chip.transfer(spender, initialBankroll, { from: initialHolder });
                             (await this.chip.balanceOf(spender)).should.be.bignumber.equal(initialBankroll);
                         });

@@ -7,14 +7,14 @@ const mode = process.env.MODE;
 
 contract('ManagerRole', function ([_, owner, manager, otherManager, ...otherAccounts]) {
 
-    after('write coverage output', async () => {
+    after('write coverage output', async function () {
         if (mode === 'coverage') {
             await global.coverageSubprovider.writeCoverageAsync();
         }
     });
 
     if (mode !== 'profile') {
-        describe('tests/coverage', () => {
+        describe('tests/coverage', function () {
             beforeEach(async function () {
                 this.contract = await ManagerRole.new({ from: owner });
                 await this.contract.addManager(manager, { from: owner });
