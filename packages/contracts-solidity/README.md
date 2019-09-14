@@ -19,7 +19,7 @@ npm install -g truffle@5.0.2 ganache-cli@6.3.0 zos@2.4.2
 In a new terminal window, run your local blockchain:
 
 ```bash
-ganache-cli --secure -u 0 -u 1 -u 2 --deterministic
+ganache-cli --deterministic
 ```
 
 Compile and deploy smart-contracts on your local blockchain:
