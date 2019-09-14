@@ -1,5 +1,11 @@
 const { BN, constants, expectEvent, shouldFail } = require('openzeppelin-test-helpers');
-const { initializeBankroll, initializeChip, initializeDice, calculateGameHash, signMessage } = require('./helpers');
+const {
+    initializeBankroll,
+    initializeChip,
+    initializeDice,
+    DiceGameDataEncoder
+} = require('./helpers');
+
 const should = require('chai').should();
 
 const Bankroll = artifacts.require('Bankroll');
@@ -256,35 +262,25 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
 
                                 describe('a simple game', function () {
 
-                                    // Random Roll = 4
-                                    const clientSeed = "df0ea096b54fc7ef48f679c094fe2f3ff2af2dd75a228fe719e9868004a11f15";
-                                    const serverSeed = "75f82f273177f1760120a0fb29e5572d031723dd955af840438fc7ea44d6e994";
+                                    let gameData;
 
-                                    // Bet Amount = 100
-                                    const betAmount = "0000000000000000000000000000000000000000000000000000000000000064";
-                                    const betAmountBN = new BN(100);
-
-                                    // Roll Under = 10
-                                    const rollUnder = "0A";
-
-                                    // Flags = ... | WON | EOG | = 0000 0010 = 2
-                                    const flags = "02";
-
-                                    // Payout = betAmount * 99 / (rollUnder - 1)
-                                    const payout = new BN(100 * 99 / (10 - 1));
-
-                                    const clientData = clientSeed + betAmount + rollUnder;
-                                    const data = "0x" + clientData + serverSeed + flags;
-                                    const gamehash = calculateGameHash("0x"+prevHash, "0x"+serverSeed, "0x"+clientData);
+                                    beforeEach(async function () {
+                                        // Random Roll = 4, Roll Under = 10
+                                        gameData = await DiceGameDataEncoder.create()
+                                                            .betAmount("100")
+                                                            .rollUnder("10")
+                                                            .clientSeed("df0ea096b54fc7ef48f679c094fe2f3ff2af2dd75a228fe719e9868004a11f15")
+                                                            .serverSeed("75f82f273177f1760120a0fb29e5572d031723dd955af840438fc7ea44d6e994")
+                                                            .hasWon(true)
+                                                            .___encode(signer);
+                                    });
 
                                     it('withdraws the requested amount', async function () {
-                                        const proof = await signMessage(signer, gamehash);
-
                                         // Withdraw Transaction
-                                        await this.dice.withdraw(this.chip.address, withdrawAmount, data, proof, { from: player });
+                                        await this.dice.withdraw(this.chip.address, withdrawAmount, gameData.data, gameData.proof, { from: player });
 
                                         // Assertions
-                                        const expectedDiceBalanceOfPlayer = depositAmount.sub(betAmountBN).add(payout).sub(withdrawAmount);
+                                        const expectedDiceBalanceOfPlayer = depositAmount.sub(gameData.betAmount).add(gameData.payout).sub(withdrawAmount);
                                         (await this.dice.balanceOf(player)).should.be.bignumber.equal(expectedDiceBalanceOfPlayer);
 
                                         const expectedBankrollBalance = initialBankroll.add(depositAmount).sub(withdrawAmount);
@@ -295,10 +291,8 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                                     });
 
                                     it('emits a transfer event', async function () {
-                                        const proof = await signMessage(signer, gamehash);
-
                                         // Withdraw Transaction
-                                        const receipt = await this.dice.withdraw(this.chip.address, withdrawAmount, data, proof, { from: player });
+                                        const receipt = await this.dice.withdraw(this.chip.address, withdrawAmount, gameData.data, gameData.proof, { from: player });
 
                                         expectEvent.inTransaction(receipt.tx, Chip, 'Transfer', {
                                             from: this.bankroll.address,
@@ -308,14 +302,12 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                                     });
 
                                     it('emits a proved event', async function () {
-                                        const proof = await signMessage(signer, gamehash);
-
                                         // Withdraw Transaction
-                                        const { logs } = await this.dice.withdraw(this.chip.address, withdrawAmount, data, proof, { from: player });
+                                        const { logs } = await this.dice.withdraw(this.chip.address, withdrawAmount, gameData.data, gameData.proof, { from: player });
 
                                         expectEvent.inLogs(logs, 'Proved', {
                                             player: player,
-                                            gamehash: gamehash
+                                            gamehash: gameData.gamehash
                                         });
                                     });
                                 });
@@ -333,23 +325,14 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                 // Deposit Transaction
                 await this.dice.deposit(this.chip.address, depositAmount, { from: player });
 
-                // Random Roll = 4
-                const clientSeed = "df0ea096b54fc7ef48f679c094fe2f3ff2af2dd75a228fe719e9868004a11f15";
-                const serverSeed = "75f82f273177f1760120a0fb29e5572d031723dd955af840438fc7ea44d6e994";
-
-                // Bet Amount = 100
-                const betAmount = "0000000000000000000000000000000000000000000000000000000000000064";
-
-                // Roll Under = 10
-                const rollUnder = "0A";
-
-                // Flags = ... | WON | EOG | = 0000 0010 = 2
-                const flags = "02";
-
-                const clientData = clientSeed + betAmount + rollUnder;
-                const data = "0x" + clientData + serverSeed + flags;
-                const gamehash = calculateGameHash("0x"+prevHash, "0x"+serverSeed, "0x"+clientData);
-                const proof = await signMessage(signer, gamehash);
+                // Random Roll = 4, Roll Under = 10
+                const { data, proof } = await DiceGameDataEncoder.create()
+                                                .betAmount("100")
+                                                .rollUnder("10")
+                                                .clientSeed("df0ea096b54fc7ef48f679c094fe2f3ff2af2dd75a228fe719e9868004a11f15")
+                                                .serverSeed("75f82f273177f1760120a0fb29e5572d031723dd955af840438fc7ea44d6e994")
+                                                .hasWon(true)
+                                                .___encode(signer);
 
                 // Withdraw Transaction
                 await this.dice.withdraw(this.chip.address, withdrawAmount, data, proof, { from: player });
