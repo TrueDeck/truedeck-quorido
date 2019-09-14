@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 
+import "../interfaces/IGame.sol";
 import "../Game.sol";
-import "../IGame.sol";
 import "./WithdrawerRoleMock.sol";
 import "../Bankroll.sol";
 
@@ -54,7 +54,7 @@ contract GameMock is IGame {
     ) external returns (bool) {
         keccak256(abi.encode(data, proof));
         emit Proved(msg.sender, keccak256(data));
-        _state._updateBalance(msg.sender, 0);
+        _state._decreaseBalance(msg.sender, _state._getBalance(msg.sender));
         return _bankroll.withdraw(token, msg.sender, amount);
     }
 }
