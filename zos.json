@@ -2,6 +2,7 @@
   "zosversion": "2.2",
   "contracts": {
     "Chip": "Chip",
+    "Bankroll": "Bankroll",
     "Dice": "Dice"
   },
   "dependencies": {},
