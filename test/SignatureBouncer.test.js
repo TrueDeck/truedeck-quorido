@@ -9,14 +9,14 @@ const mode = process.env.MODE;
 
 contract('SignatureBouncer', function ([_, signer, otherSigner, anyone, authorizedUser, ...otherAccounts]) {
 
-    after("write coverage output", async () => {
+    after("write coverage output", async function () {
         if (mode === "coverage") {
             await global.coverageSubprovider.writeCoverageAsync();
         }
     });
 
     if (mode !== "profile") {
-        describe("tests/coverage", () => {
+        describe("tests/coverage", function () {
 
             beforeEach(async function () {
                 this.sigBouncer = await SignatureBouncerMock.new({ from: signer });
