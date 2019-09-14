@@ -16,14 +16,14 @@ contract('Chip', function ([_, deployer, initialHolder, minterA, minterB, pauser
     const minters = [minterA, minterB];
     const pausers = [pauserA, pauserB];
 
-    after('write coverage output', async () => {
+    after('write coverage output', async function () {
         if (mode === 'coverage') {
             await global.coverageSubprovider.writeCoverageAsync();
         }
     });
 
     if (mode !== 'profile') {
-        describe('tests/coverage', () => {
+        describe('tests/coverage', function () {
             beforeEach(async function () {
                 this.chip = await Chip.new({ from: deployer });
             });

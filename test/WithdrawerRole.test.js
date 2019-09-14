@@ -9,14 +9,14 @@ const mode = process.env.MODE;
 
 contract('WithdrawerRole', function ([_, owner, ...otherAccounts]) {
 
-    after('write coverage output', async () => {
+    after('write coverage output', async function () {
         if (mode === 'coverage') {
             await global.coverageSubprovider.writeCoverageAsync();
         }
     });
 
     if (mode !== 'profile') {
-        describe('tests/coverage', () => {
+        describe('tests/coverage', function () {
 
             const manager = owner;
             const anyone = otherAccounts[0];

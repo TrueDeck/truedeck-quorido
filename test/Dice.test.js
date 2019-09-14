@@ -25,7 +25,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
     const minters = [owner];
     const pausers = [owner];
 
-    before(async () => {
+    before(async function () {
         if (mode === "profile") {
             this.bankroll = await Bankroll.deployed();
             this.chip = await Chip.deployed();
@@ -52,7 +52,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
         }
     });
 
-    after("write coverage/profiler output", async () => {
+    after("write coverage/profiler output", async function () {
         if (mode === "profile") {
             await global.profilerSubprovider.writeProfilerOutputAsync();
         } else if (mode === "coverage") {
@@ -60,29 +60,29 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
         }
     });
 
-    beforeEach(async () => {
+    beforeEach(async function () {
         if (mode === "profile") {
             global.profilerSubprovider.start();
         }
     });
 
-    afterEach(async () => {
+    afterEach(async function () {
         if (mode === "profile") {
             global.profilerSubprovider.stop();
         }
     });
 
     if (mode !== 'profile') {
-        describe('tests/coverage', () => {
+        describe('tests/coverage', function () {
 
-            beforeEach(async () => {
+            beforeEach(async function () {
                 this.bankroll = await Bankroll.new({ from: deployer });
                 this.chip = await Chip.new({ from: deployer });
                 this.dice = await Dice.new({ from: deployer });
             });
 
-            context('initialized', async () => {
-                beforeEach(async () => {
+            context('initialized', async function () {
+                beforeEach(async function () {
                     initializeChip(this.chip, name, symbol, decimals, initialSupply, initialHolder, minters, pausers, deployer);
                     initializeBankroll(this.bankroll, owner, deployer);
                     initializeDice(this.dice, owner, signer, this.bankroll.address, deployer);
@@ -92,83 +92,83 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                     (await this.bankroll.addWithdrawer(this.dice.address, { from: owner }));
                 });
 
-                it('owner has the owner role', async () => {
+                it('owner has the owner role', async function () {
                     (await this.dice.isOwner({ from: owner })).should.equal(true);
                     (await this.bankroll.isOwner({ from: owner })).should.equal(true);
                 });
 
-                it('signer has the signer role', async () => {
+                it('signer has the signer role', async function () {
                     (await this.dice.isSigner(signer)).should.equal(true);
                 });
 
-                it('manager has the manager role', async () => {
+                it('manager has the manager role', async function () {
                     (await this.dice.isManager(manager)).should.equal(true);
                     (await this.bankroll.isManager(manager)).should.equal(true);
                 });
 
-                it('dice contract has the withdrawer role', async () => {
+                it('dice contract has the withdrawer role', async function () {
                     (await this.bankroll.isWithdrawer(this.dice.address)).should.equal(true);
                 });
 
-                it('dice isGame returns true', async () => {
+                it('dice isGame returns true', async function () {
                     (await this.dice.isGame({ from: anyone })).should.equal(true);
                 });
 
-                describe('deposit', () => {
+                describe('deposit', function () {
 
-                    describe('when the bankroll does not have enough approved balance', () => {
-                        describe('when the player does not have enough balance', () => {
-                            it('reverts', async () => {
+                    describe('when the bankroll does not have enough approved balance', function () {
+                        describe('when the player does not have enough balance', function () {
+                            it('reverts', async function () {
                                 await shouldFail.reverting(this.dice.deposit(this.chip.address, depositAmount, { from: player }));
                             });
                         });
 
-                        describe('when the player has enough balance', () => {
-                            beforeEach(async () => {
+                        describe('when the player has enough balance', function () {
+                            beforeEach(async function () {
                                 await this.chip.transfer(player, initialBalance, { from: initialHolder });
                                 (await this.chip.balanceOf(player)).should.be.bignumber.equal(initialBalance);
                             });
 
-                            it('reverts', async () => {
+                            it('reverts', async function () {
                                 await shouldFail.reverting(this.dice.deposit(this.chip.address, depositAmount, { from: player }));
                             });
                         });
                     });
 
-                    describe('when the bankroll has enough approved balance', () => {
-                        beforeEach(async () => {
+                    describe('when the bankroll has enough approved balance', function () {
+                        beforeEach(async function () {
                             await this.chip.approve(this.bankroll.address, approveAmount, { from: player });
                         });
 
-                        describe('when the player does not have enough balance', () => {
-                            it('reverts', async () => {
+                        describe('when the player does not have enough balance', function () {
+                            it('reverts', async function () {
                                 await shouldFail.reverting(this.dice.deposit(this.chip.address, depositAmount, { from: player }));
                             });
                         });
 
-                        describe('when the player has enough balance', () => {
-                            beforeEach(async () => {
+                        describe('when the player has enough balance', function () {
+                            beforeEach(async function () {
                                 await this.chip.transfer(player, initialBalance, { from: initialHolder });
                                 (await this.chip.balanceOf(player)).should.be.bignumber.equal(initialBalance);
                             });
 
-                            context('when paused', () => {
-                                beforeEach(async () => {
+                            context('when paused', function () {
+                                beforeEach(async function () {
                                     await this.dice.pause({ from: manager });
                                     (await this.dice.paused()).should.equal(true);
                                 });
 
-                                it('reverts', async () => {
+                                it('reverts', async function () {
                                     await shouldFail.reverting(this.dice.deposit(this.chip.address, depositAmount, { from: player }));
                                 });
                             });
 
-                            context('when unpaused', () => {
-                                beforeEach(async () => {
+                            context('when unpaused', function () {
+                                beforeEach(async function () {
                                     (await this.dice.paused()).should.equal(false);
                                 });
 
-                                it('deposits the requested amount', async () => {
+                                it('deposits the requested amount', async function () {
                                     await this.dice.deposit(this.chip.address, depositAmount, { from: player });
 
                                     (await this.dice.balanceOf(player)).should.be.bignumber.equal(depositAmount);
@@ -176,13 +176,13 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                                     (await this.chip.balanceOf(player)).should.be.bignumber.equal(initialBalance.sub(depositAmount));
                                 });
 
-                                it('decreases the bankroll allowance', async () => {
+                                it('decreases the bankroll allowance', async function () {
                                     await this.dice.deposit(this.chip.address, depositAmount, { from: player });
 
                                     (await this.chip.allowance(player, this.bankroll.address)).should.be.bignumber.equal(approveAmount.sub(depositAmount));
                                 });
 
-                                it('emits a transfer event', async () => {
+                                it('emits a transfer event', async function () {
                                     const receipt = await this.dice.deposit(this.chip.address, depositAmount, { from: player });
 
                                     expectEvent.inTransaction(receipt.tx, Chip, 'Transfer', {
@@ -192,7 +192,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                                     });
                                 });
 
-                                it('emits an approval event', async () => {
+                                it('emits an approval event', async function () {
                                     const receipt = await this.dice.deposit(this.chip.address, depositAmount, { from: player });
 
                                     expectEvent.inTransaction(receipt.tx, Chip, 'Approval', {
@@ -206,42 +206,42 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                     });
                 });
 
-                describe('withdrawal', () => {
+                describe('withdrawal', function () {
 
-                    describe('when the bankroll does not has enough balance', () => {
-                        it('reverts', async () => {
+                    describe('when the bankroll does not has enough balance', function () {
+                        it('reverts', async function () {
                             await shouldFail.reverting(this.dice.withdraw(
                                 this.chip.address, withdrawAmount, "0x0", "0x0", { from: player }));
                         });
                     });
 
-                    describe('when the bankroll has enough balance', () => {
-                        beforeEach(async () => {
+                    describe('when the bankroll has enough balance', function () {
+                        beforeEach(async function () {
                             await this.chip.transfer(this.bankroll.address, initialBankroll, { from: initialHolder });
                             (await this.chip.balanceOf(this.bankroll.address)).should.be.bignumber.equal(initialBankroll);
                         });
 
-                        context('when paused', () => {
-                            beforeEach(async () => {
+                        context('when paused', function () {
+                            beforeEach(async function () {
                                 await this.dice.pause({ from: manager });
                                 (await this.dice.paused()).should.equal(true);
                             });
 
-                            it('reverts', async () => {
+                            it('reverts', async function () {
                                 await shouldFail.reverting(this.dice.withdraw(
                                     this.chip.address, withdrawAmount, "0x0", "0x0", { from: player }));
                             });
                         });
 
-                        context('when unpaused', () => {
-                            beforeEach(async () => {
+                        context('when unpaused', function () {
+                            beforeEach(async function () {
                                 (await this.bankroll.paused()).should.equal(false);
                             });
 
-                            describe('game tests', () => {
+                            describe('game tests', function () {
                                 const prevHash = "0000000000000000000000000000000000000000000000000000000000000000";
 
-                                beforeEach(async () => {
+                                beforeEach(async function () {
                                     // Player has enough balance
                                     await this.chip.transfer(player, initialBalance, { from: initialHolder });
                                     (await this.chip.balanceOf(player)).should.be.bignumber.equal(initialBalance);
@@ -254,7 +254,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                                     (await this.chip.balanceOf(player)).should.be.bignumber.equal(initialBalance.sub(depositAmount));
                                 });
 
-                                describe('a simple game', () => {
+                                describe('a simple game', function () {
 
                                     // Random Roll = 4
                                     const clientSeed = "df0ea096b54fc7ef48f679c094fe2f3ff2af2dd75a228fe719e9868004a11f15";
@@ -277,7 +277,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                                     const data = "0x" + clientData + serverSeed + flags;
                                     const gamehash = calculateGameHash("0x"+prevHash, "0x"+serverSeed, "0x"+clientData);
 
-                                    it('withdraws the requested amount', async () => {
+                                    it('withdraws the requested amount', async function () {
                                         const proof = await signMessage(signer, gamehash);
 
                                         // Withdraw Transaction
@@ -294,7 +294,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                                         (await this.chip.balanceOf(player)).should.be.bignumber.equal(expectedPlayerBalance);
                                     });
 
-                                    it('emits a transfer event', async () => {
+                                    it('emits a transfer event', async function () {
                                         const proof = await signMessage(signer, gamehash);
 
                                         // Withdraw Transaction
@@ -307,7 +307,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                                         });
                                     });
 
-                                    it('emits a proved event', async () => {
+                                    it('emits a proved event', async function () {
                                         const proof = await signMessage(signer, gamehash);
 
                                         // Withdraw Transaction
@@ -326,10 +326,10 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
             });
         });
     } else {
-        describe("profile", () => {
+        describe("profile", function () {
             const prevHash = "0000000000000000000000000000000000000000000000000000000000000000";
 
-            it('should profile a simple game', async () => {
+            it('should profile a simple game', async function () {
                 // Deposit Transaction
                 await this.dice.deposit(this.chip.address, depositAmount, { from: player });
 

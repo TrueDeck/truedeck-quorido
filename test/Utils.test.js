@@ -12,13 +12,13 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
     const BN_999 = new BN(999);
     const BN_1 = new BN(1);
 
-    before(async () => {
+    before(async function () {
         if (mode === "profile") {
             utils = await Utils.deployed();
         }
     });
 
-    after("write coverage/profiler output", async () => {
+    after("write coverage/profiler output", async function () {
         if (mode === "profile") {
             await global.profilerSubprovider.writeProfilerOutputAsync();
         } else if (mode === "coverage") {
@@ -26,7 +26,7 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
         }
     });
 
-    beforeEach(async () => {
+    beforeEach(async function () {
         if (mode !== "profile") {
             utils = await Utils.new();
         } else if (mode === "profile") {
@@ -34,16 +34,16 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
         }
     });
 
-    afterEach(async () => {
+    afterEach(async function () {
         if (mode === "profile") {
             global.profilerSubprovider.stop();
         }
     });
 
     if (mode !== "profile") {
-        describe("tests/coverage", () => {
+        describe("tests/coverage", function () {
 
-            it("should calculate game hash", async () => {
+            it("should calculate game hash", async function () {
                 const h1 = "0xc5ee48380eecc4832905500b23878950f5c00bf985086a4552d31285fcaf4519";
                 const s1 = "0x456d291cf53f3dd1c67766843c3867d8946b7ad1b8eda2eb92c774c3dad3f2e0";
                 const d1 = "0xdc36d162f7ffbbfd1a7cc5794a5fe902b8afbf09fa2e2a9299cf8ebf1af15975ac0f19c8ba83a4307d1250b130c892ac8a2c30f6b174fc1e849f5fb1511d4eff";
@@ -67,7 +67,7 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
                 }
             });
 
-            it("should convert to bool", async () => {
+            it("should convert to bool", async function () {
                 const packedBools = new BN("AA", 16);
 
                 (await utils.toBool(packedBools, 0)).should.equal(false);
@@ -80,7 +80,7 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
                 (await utils.toBool(packedBools, 7)).should.equal(true);
             });
 
-            it("should convert bytes to uint8", async () => {
+            it("should convert bytes to uint8", async function () {
                 // one byte input
                 (await utils.toUint8(1, "0x4")).should.bignumber.equal(new BN("4", 16));
                 (await utils.toUint8(1, "0xA")).should.bignumber.equal(new BN("A", 16));
@@ -96,7 +96,7 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
                 (await utils.toUint8(5, "0x255FEFEFFFEFE0000")).should.bignumber.equal(new BN("FF", 16));
             });
 
-            it("should convert bytes to uint16", async () => {
+            it("should convert bytes to uint16", async function () {
                 // multiple bytes input
                 (await utils.toUint16(2, "0x25045F")).should.bignumber.equal(new BN("2504", 16));
                 (await utils.toUint16(4, "0x5F255F0A")).should.bignumber.equal(new BN("5F0A", 16));
@@ -105,7 +105,7 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
                 (await utils.toUint16(5, "0x255FEFEFFFEFE0000")).should.bignumber.equal(new BN("FEFF", 16));
             });
 
-            it("should convert bytes to uint32", async () => {
+            it("should convert bytes to uint32", async function () {
                 // multiple bytes input
                 (await utils.toUint32(5, "0x25045F25045F")).should.bignumber.equal(new BN("45F2504", 16));
                 (await utils.toUint32(6, "0x5F255F0A5F255F0A")).should.bignumber.equal(new BN("5F0A5F25", 16));
@@ -114,7 +114,7 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
                 (await utils.toUint32(8, "0x255FEFEFFFEFE0000")).should.bignumber.equal(new BN("FFFEFE00", 16));
             });
 
-            it("should convert bytes to uint256", async () => {
+            it("should convert bytes to uint256", async function () {
                 // 32 bytes, position = [1,32], offset = 32
                 const o1 = 32;
                 const b1 = "0xF57278154268028842209B73232002239291055907C81674318526773816223D";
@@ -149,7 +149,7 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
                 }
             });
 
-            it("should convert bytes to bytes32", async () => {
+            it("should convert bytes to bytes32", async function () {
                 // 32 bytes, position = [1,32], offset = 0
                 const o1 = 0;
                 const b1 = "0x56ec63c61aac091731e8611fc41ed540043b7f0bfbc28e1cb26c7f0739e77265";
@@ -184,7 +184,7 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
                 }
             });
 
-            it("should extract bytes from bytes", async () => {
+            it("should extract bytes from bytes", async function () {
                 // 40 bytes
                 const b1 = "0xaaaaaaaae63764674862174594792f85315850066960935168a01500787187682329815baaaaaaaa";
                 // 80 bytes
@@ -209,7 +209,7 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
                 (await utils.toBytes(0, 103, b3)).should.equal(b3);
             });
 
-            it("should deserialize bytes into types", async () => {
+            it("should deserialize bytes into types", async function () {
                 const b = "0x2f77de4495ddbadade2d06ea9f92873494366c1b4418fbb4b9139eca0b8049498cf382f06c4a4325fa5c8e22e42e6e04b75d0698391a28bb259f931a78446253d965f5817654eaac765a9c571a572e89238f19a420781092eec0d987f1e60b8d01b1a480e40085";
 
                 const { _bytes1, _int8, _b1, _int16, _bytes2, _int32, _b2, _int256 } = await utils.deserialize(b);
@@ -226,8 +226,8 @@ contract("utils", async ([_, owner, ...otherAccounts]) => {
             });
         });
     } else {
-        describe("profile", () => {
-            it("should profile Utils contract", async () => {
+        describe("profile", function () {
+            it("should profile Utils contract", async function () {
                 const h = "0xb16222d190976de424b241214ce31f32ab305193b859bab01e21d449d52a60f1";
                 const s = "0x59afb1bebacc47df2019ef37652eccd0126f99658cbc5627a08f4b1f14571d0a";
                 const d = "0x2f77de4495ddbadade2d06ea9f92873494366c1b4418fbb4b9139eca0b8049498cf382f06c4a4325fa5c8e22e42e6e04b75d0698391a28bb259f931a78446253d965f5817654eaac765a9c571a572e89238f19a420781092eec0d987f1e60b8d01b1a480e40085";
