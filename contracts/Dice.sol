@@ -4,9 +4,9 @@ import "zos-lib/contracts/Initializable.sol";
 import "openzeppelin-eth/contracts/drafts/SignatureBouncer.sol";
 import "openzeppelin-eth/contracts/math/SafeMath.sol";
 import "openzeppelin-eth/contracts/token/ERC20/IERC20.sol";
+import "./interfaces/IGame.sol";
 import "./Bankroll.sol";
 import "./Game.sol";
-import "./IGame.sol";
 import "./Manageable.sol";
 import "./Utils.sol";
 

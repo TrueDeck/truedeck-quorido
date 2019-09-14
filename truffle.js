@@ -36,7 +36,13 @@ if (mode === "profile") {
         defaultFromAddress,
         {
           isVerbose,
-          ignoreFilesGlobs: ['**/node_modules/**', '**/interfaces/**', '**/test/**'],
+          ignoreFilesGlobs: [
+            '**/node_modules/**',
+            '**/contracts/mocks/**',
+            '**/contracts/interfaces/**',
+            '**/contracts/Migrations.sol',
+            '**/test/**'
+          ],
         }
     );
     provider.addProvider(global.coverageSubprovider);
