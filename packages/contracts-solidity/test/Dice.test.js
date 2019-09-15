@@ -245,7 +245,6 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                             });
 
                             describe('game tests', function () {
-                                const prevHash = "0000000000000000000000000000000000000000000000000000000000000000";
 
                                 beforeEach(async function () {
                                     // Player has enough balance
@@ -311,6 +310,69 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                                         });
                                     });
                                 });
+
+                                describe('a complex game', function () {
+
+                                    let gameData;
+
+                                    beforeEach(async function () {
+                                        gameData = await DiceGameDataEncoder.create()
+                                                            .betAmount("100")
+                                                            .rollUnder("10")
+                                                            .clientSeed("df0ea096b54fc7ef48f679c094fe2f3ff2af2dd75a228fe719e9868004a11f15")
+                                                            .serverSeed("75f82f273177f1760120a0fb29e5572d031723dd955af840438fc7ea44d6e994")
+                                                            .hasWon(true)
+                                                            .___anotherRound()
+                                                            .betAmount("70")
+                                                            .rollUnder("45")
+                                                            .clientSeed("8c93ad444e8b965e36e2cacef852f56fe8158b1ab923f79517d036840e109ac1")
+                                                            .serverSeed("9e570c1c6f9ce2b22c511418b436895e10a238c6e19c0a35311ab9eeb1d8371f")
+                                                            .hasWon(false)
+                                                            .___anotherRound()
+                                                            .betAmount("125")
+                                                            .rollUnder("5")
+                                                            .clientSeed("dec6e001631613b638fe8a774fcb11cbf5f97c88ec4dea14f1584f12df15be4c")
+                                                            .serverSeed("f54baee274c71462393187c27142e6f613ce2dadf8d7674dd1f2a39ace22015c")
+                                                            .hasWon(true)
+                                                            .___encode(signer);
+                                    });
+
+                                    it('withdraws the requested amount', async function () {
+                                        // Withdraw Transaction
+                                        await this.dice.withdraw(this.chip.address, withdrawAmount, gameData.data, gameData.proof, { from: player });
+
+                                        // Assertions
+                                        const expectedDiceBalanceOfPlayer = depositAmount.sub(gameData.betAmount).add(gameData.payout).sub(withdrawAmount);
+                                        (await this.dice.balanceOf(player)).should.be.bignumber.equal(expectedDiceBalanceOfPlayer);
+
+                                        const expectedBankrollBalance = initialBankroll.add(depositAmount).sub(withdrawAmount);
+                                        (await this.chip.balanceOf(this.bankroll.address)).should.be.bignumber.equal(expectedBankrollBalance);
+
+                                        const expectedPlayerBalance = initialBalance.sub(depositAmount).add(withdrawAmount);
+                                        (await this.chip.balanceOf(player)).should.be.bignumber.equal(expectedPlayerBalance);
+                                    });
+
+                                    it('emits a transfer event', async function () {
+                                        // Withdraw Transaction
+                                        const receipt = await this.dice.withdraw(this.chip.address, withdrawAmount, gameData.data, gameData.proof, { from: player });
+
+                                        expectEvent.inTransaction(receipt.tx, Chip, 'Transfer', {
+                                            from: this.bankroll.address,
+                                            to: player,
+                                            value: withdrawAmount,
+                                        });
+                                    });
+
+                                    it('emits a proved event', async function () {
+                                        // Withdraw Transaction
+                                        const { logs } = await this.dice.withdraw(this.chip.address, withdrawAmount, gameData.data, gameData.proof, { from: player });
+
+                                        expectEvent.inLogs(logs, 'Proved', {
+                                            player: player,
+                                            gamehash: gameData.gamehash
+                                        });
+                                    });
+                                });
                             });
                         });
                     });
@@ -319,18 +381,28 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
         });
     } else {
         describe("profile", function () {
-            const prevHash = "0000000000000000000000000000000000000000000000000000000000000000";
 
-            it('should profile a simple game', async function () {
+            it('should profile a complex game', async function () {
                 // Deposit Transaction
                 await this.dice.deposit(this.chip.address, depositAmount, { from: player });
 
-                // Random Roll = 4, Roll Under = 10
                 const { data, proof } = await DiceGameDataEncoder.create()
                                                 .betAmount("100")
                                                 .rollUnder("10")
                                                 .clientSeed("df0ea096b54fc7ef48f679c094fe2f3ff2af2dd75a228fe719e9868004a11f15")
                                                 .serverSeed("75f82f273177f1760120a0fb29e5572d031723dd955af840438fc7ea44d6e994")
+                                                .hasWon(true)
+                                                .___anotherRound()
+                                                .betAmount("70")
+                                                .rollUnder("45")
+                                                .clientSeed("8c93ad444e8b965e36e2cacef852f56fe8158b1ab923f79517d036840e109ac1")
+                                                .serverSeed("9e570c1c6f9ce2b22c511418b436895e10a238c6e19c0a35311ab9eeb1d8371f")
+                                                .hasWon(false)
+                                                .___anotherRound()
+                                                .betAmount("125")
+                                                .rollUnder("5")
+                                                .clientSeed("dec6e001631613b638fe8a774fcb11cbf5f97c88ec4dea14f1584f12df15be4c")
+                                                .serverSeed("f54baee274c71462393187c27142e6f613ce2dadf8d7674dd1f2a39ace22015c")
                                                 .hasWon(true)
                                                 .___encode(signer);
 

@@ -91,7 +91,9 @@ var encoder = {
             flags = flags.toString(16, 2);
 
             betAmount = betAmount.add(amount);
-            payout = payout.add(amount.muln(99).div(rollUnder.subn(1)));
+            if (gameData.wonBits[i] === true) {
+                payout = payout.add(amount.muln(99).div(rollUnder.subn(1)));
+            }
             gamehash = calculateGameHash(gamehash, "0x" + serverSeed, "0x" + clientData);
             data = data + clientData + serverSeed + flags;
         }
