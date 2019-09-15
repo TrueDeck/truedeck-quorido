@@ -373,6 +373,25 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                                         });
                                     });
                                 });
+
+                                describe('a wrong game', function () {
+
+                                    let gameData1;
+
+                                    beforeEach(async function () {
+                                        gameData1 = await DiceGameDataEncoder.create()
+                                                            .betAmount("100")
+                                                            .rollUnder("2")
+                                                            .clientSeed("df0ea096b54fc7ef48f679c094fe2f3ff2af2dd75a228fe719e9868004a11f15")
+                                                            .serverSeed("75f82f273177f1760120a0fb29e5572d031723dd955af840438fc7ea44d6e994")
+                                                            .hasWon(true)   // Lost in actual
+                                                            .___encode(signer);
+                                    });
+
+                                    it('reverts', async function () {
+                                        await shouldFail.reverting(this.dice.withdraw(this.chip.address, withdrawAmount, gameData1.data, gameData1.proof, { from: player }));
+                                    });
+                                });
                             });
                         });
                     });
