@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-import "openzeppelin-eth/contracts/drafts/SignatureBouncer.sol";
+import "@openzeppelin/contracts-ethereum-package/contracts/drafts/SignatureBouncer.sol";
 
 contract SignatureBouncerMock is SignatureBouncer {
     constructor() public {
