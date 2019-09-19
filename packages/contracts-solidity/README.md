@@ -3,10 +3,10 @@ Multi-Blockchain Provably Fair Casino Platform by TrueDeck
 
 ## Requirements
 
-Install ZeppelinOS, Ganache, and Truffle
+Install Truffle, Ganache, and OpenZeppelin 
 
 ```bash
-npm install -g truffle@5.0.2 ganache-cli@6.3.0 zos@2.4.2
+npm install -g truffle@5.0.2 ganache-cli@6.3.0 @openzeppelin/cli@2.5.0
 ```
 
 ## Getting Started
@@ -22,33 +22,37 @@ In a new terminal window, run your local blockchain:
 ganache-cli --deterministic
 ```
 
-Compile and deploy smart-contracts on your local blockchain:
+Compile smart-contracts:
 
 ```bash
-zos create
+truffle compile
 ```
 
-In a new terminal window, in the `client` directory, run the React app:
+Deploy Contracts (Chip, Bankroll and Dice) using OpenZeppelin CLI:
+
+```bash
+openzeppelin create
+```
+
+In a new terminal window, in the `client` directory, run the Gatsby app:
 
 ```bash
 cd client
-npm run start
+gatsby develop
 ```
 
 ## Test
+
+In a new terminal window, run your local blockchain:
+
+```bash
+ganache-cli --deterministic
+```
 
 ### Solidity Tests
 
 ```bash
 npm test
-```
-
-### React Tests
-Jest is included for testing React components. Compile your contracts before running Jest, or you may receive some file not found errors.
-
-```javascript
-// ensure you are inside the client directory when running this
-npm run test
 ```
 
 ## Sol-trace
@@ -64,16 +68,14 @@ npm run trace
 ```bash
 npm run coverage
 ```
-
-It will generate the HTML report and open it in the default browser. You can use any other istanbul reporter too. (text, json, etc.).
-
 ## Sol-profiler
-
-Keep your local ganache blockchain running and run below command:
 
 ```bash
 npm run profile
 ```
+
+
+Both coverage and profile commands will generate the HTML report and open it in the default browser. You can use any other istanbul reporter too. (text, json, etc.).
 
 ## Licence
 
