@@ -1,4 +1,4 @@
-const { BN, expectEvent, shouldFail } = require('openzeppelin-test-helpers');
+const { BN, expectEvent, expectRevert } = require('openzeppelin-test-helpers');
 const { initializeBankroll, initializeChip } = require('./helpers');
 const should = require('chai').should();
 
@@ -99,7 +99,7 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                     describe('when the spender does not have enough approved balance', function () {
                         describe('when the player does not have enough balance', function () {
                             it('reverts', async function () {
-                                await shouldFail.reverting(this.gameContract.deposit(token, depositAmount, { from: player }));
+                                await expectRevert.unspecified(this.gameContract.deposit(token, depositAmount, { from: player }));
                             });
                         });
 
@@ -110,7 +110,7 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                             });
 
                             it('reverts', async function () {
-                                await shouldFail.reverting(this.gameContract.deposit(token, depositAmount, { from: player }));
+                                await expectRevert.unspecified(this.gameContract.deposit(token, depositAmount, { from: player }));
                             });
                         });
                     });
@@ -122,7 +122,7 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
 
                         describe('when the player does not have enough balance', function () {
                             it('reverts', async function () {
-                                await shouldFail.reverting(this.gameContract.deposit(token, depositAmount, { from: player }));
+                                await expectRevert.unspecified(this.gameContract.deposit(token, depositAmount, { from: player }));
                             });
                         });
 
@@ -139,7 +139,7 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                                 });
 
                                 it('reverts', async function () {
-                                    await shouldFail.reverting(this.gameContract.deposit(token, depositAmount, { from: player }));
+                                    await expectRevert.unspecified(this.gameContract.deposit(token, depositAmount, { from: player }));
                                 });
                             });
 
@@ -190,7 +190,7 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
 
                     describe('when the bankroll does not has enough balance', function () {
                         it('reverts', async function () {
-                            await shouldFail.reverting(this.gameContract.withdraw(
+                            await expectRevert.unspecified(this.gameContract.withdraw(
                                 token, withdrawAmount, "0x0", "0x0", { from: player }));
                         });
                     });
@@ -208,7 +208,7 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
                             });
 
                             it('reverts', async function () {
-                                await shouldFail.reverting(this.gameContract.withdraw(
+                                await expectRevert.unspecified(this.gameContract.withdraw(
                                     token, withdrawAmount, "0x0", "0x0", { from: player }));
                             });
                         });
@@ -220,7 +220,7 @@ contract('Bankroll', function ([_, deployer, owner, managerA, managerB, initialH
 
                             describe('when the player withdraws through non-withdrawer', function () {
                                 it('reverts', async function () {
-                                    await shouldFail.reverting(this.anyGameContract.withdraw(
+                                    await expectRevert.unspecified(this.anyGameContract.withdraw(
                                         token, withdrawAmount, "0x0", "0x0", { from: player }));
                                 });
                             });

@@ -1,4 +1,4 @@
-const { shouldFail, constants, expectEvent } = require('openzeppelin-test-helpers');
+const { expectRevert, constants, expectEvent } = require('openzeppelin-test-helpers');
 const { ZERO_ADDRESS } = constants;
 const should = require('chai').should();
 
@@ -53,7 +53,7 @@ contract('WithdrawerRole', function ([_, owner, ...otherAccounts]) {
                 });
 
                 it('reverts when querying roles for the null account', async function () {
-                    await shouldFail.reverting(this.contract['isWithdrawer'](ZERO_ADDRESS));
+                    await expectRevert.unspecified(this.contract['isWithdrawer'](ZERO_ADDRESS));
                 });
 
                 describe('access control', function () {
@@ -69,7 +69,7 @@ contract('WithdrawerRole', function ([_, owner, ...otherAccounts]) {
                       const from = anyone;
 
                       it('reverts', async function () {
-                          await shouldFail.reverting(this.anyGameContract['onlyWithdrawerMock']({ from }));
+                          await expectRevert.unspecified(this.anyGameContract['onlyWithdrawerMock']({ from }));
                       });
                     });
                 });
@@ -89,15 +89,15 @@ contract('WithdrawerRole', function ([_, owner, ...otherAccounts]) {
                         });
 
                         it('reverts when adding role to an already assigned contract', async function () {
-                            await shouldFail.reverting(this.contract['addWithdrawer'](withdrawer, { from }));
+                            await expectRevert.unspecified(this.contract['addWithdrawer'](withdrawer, { from }));
                         });
 
                         it('reverts when adding role to the non-game account', async function () {
-                            await shouldFail.reverting(this.contract['addWithdrawer'](anyone, { from }));
+                            await expectRevert.unspecified(this.contract['addWithdrawer'](anyone, { from }));
                         });
 
                         it('reverts when adding role to the null account', async function () {
-                            await shouldFail.reverting(this.contract['addWithdrawer'](ZERO_ADDRESS, { from }));
+                            await expectRevert.unspecified(this.contract['addWithdrawer'](ZERO_ADDRESS, { from }));
                         });
                     });
                 });
@@ -118,15 +118,15 @@ contract('WithdrawerRole', function ([_, owner, ...otherAccounts]) {
                         });
 
                         it('reverts when removing from an unassigned game contract', async function () {
-                            await shouldFail.reverting(this.contract['removeWithdrawer'](anygame), { from });
+                            await expectRevert.unspecified(this.contract['removeWithdrawer'](anygame), { from });
                         });
 
                         it('reverts when removing from an unassigned non-game contract', async function () {
-                            await shouldFail.reverting(this.contract['removeWithdrawer'](anyone), { from });
+                            await expectRevert.unspecified(this.contract['removeWithdrawer'](anyone), { from });
                         });
 
                         it('reverts when removing role from the null account', async function () {
-                            await shouldFail.reverting(this.contract['removeWithdrawer'](ZERO_ADDRESS), { from });
+                            await expectRevert.unspecified(this.contract['removeWithdrawer'](ZERO_ADDRESS), { from });
                         });
                     });
                 });
@@ -146,11 +146,11 @@ contract('WithdrawerRole', function ([_, owner, ...otherAccounts]) {
                     });
 
                     it('reverts when renouncing unassigned role by game contract', async function () {
-                        await shouldFail.reverting(this.anyGameContract['renounceWithdrawer']({ from: anyone }));
+                        await expectRevert.unspecified(this.anyGameContract['renounceWithdrawer']({ from: anyone }));
                     });
 
                     it('reverts when renouncing unassigned role by non-game account', async function () {
-                        await shouldFail.reverting(this.contract['renounceWithdrawer']({ from: anyone }));
+                        await expectRevert.unspecified(this.contract['renounceWithdrawer']({ from: anyone }));
                     });
                 });
             });

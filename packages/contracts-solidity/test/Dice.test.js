@@ -1,4 +1,4 @@
-const { BN, constants, expectEvent, shouldFail } = require('openzeppelin-test-helpers');
+const { BN, constants, expectEvent, expectRevert } = require('openzeppelin-test-helpers');
 const {
     initializeBankroll,
     initializeChip,
@@ -125,7 +125,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                     describe('when the bankroll does not have enough approved balance', function () {
                         describe('when the player does not have enough balance', function () {
                             it('reverts', async function () {
-                                await shouldFail.reverting(this.dice.deposit(this.chip.address, depositAmount, { from: player }));
+                                await expectRevert.unspecified(this.dice.deposit(this.chip.address, depositAmount, { from: player }));
                             });
                         });
 
@@ -136,7 +136,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                             });
 
                             it('reverts', async function () {
-                                await shouldFail.reverting(this.dice.deposit(this.chip.address, depositAmount, { from: player }));
+                                await expectRevert.unspecified(this.dice.deposit(this.chip.address, depositAmount, { from: player }));
                             });
                         });
                     });
@@ -148,7 +148,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
 
                         describe('when the player does not have enough balance', function () {
                             it('reverts', async function () {
-                                await shouldFail.reverting(this.dice.deposit(this.chip.address, depositAmount, { from: player }));
+                                await expectRevert.unspecified(this.dice.deposit(this.chip.address, depositAmount, { from: player }));
                             });
                         });
 
@@ -165,7 +165,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                                 });
 
                                 it('reverts', async function () {
-                                    await shouldFail.reverting(this.dice.deposit(this.chip.address, depositAmount, { from: player }));
+                                    await expectRevert.unspecified(this.dice.deposit(this.chip.address, depositAmount, { from: player }));
                                 });
                             });
 
@@ -216,7 +216,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
 
                     describe('when the bankroll does not has enough balance', function () {
                         it('reverts', async function () {
-                            await shouldFail.reverting(this.dice.withdraw(
+                            await expectRevert.unspecified(this.dice.withdraw(
                                 this.chip.address, withdrawAmount, "0x0", "0x0", { from: player }));
                         });
                     });
@@ -234,7 +234,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                             });
 
                             it('reverts', async function () {
-                                await shouldFail.reverting(this.dice.withdraw(
+                                await expectRevert.unspecified(this.dice.withdraw(
                                     this.chip.address, withdrawAmount, "0x0", "0x0", { from: player }));
                             });
                         });
@@ -389,7 +389,7 @@ contract('Dice', function ([_, deployer, owner, signer, manager, player, anyone,
                                     });
 
                                     it('reverts', async function () {
-                                        await shouldFail.reverting(this.dice.withdraw(this.chip.address, withdrawAmount, gameData1.data, gameData1.proof, { from: player }));
+                                        await expectRevert.unspecified(this.dice.withdraw(this.chip.address, withdrawAmount, gameData1.data, gameData1.proof, { from: player }));
                                     });
                                 });
                             });
