@@ -1,8 +1,8 @@
 pragma solidity ^0.5.0;
 
-import "zos-lib/contracts/Initializable.sol";
-import "openzeppelin-eth/contracts/token/ERC20/StandaloneERC20.sol";
-import "openzeppelin-eth/contracts/token/ERC20/ERC20Burnable.sol";
+import "@openzeppelin/upgrades/contracts/Initializable.sol";
+import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/StandaloneERC20.sol";
+import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Burnable.sol";
 
 /**
  * @title Standard ERC20 chip, with minting, burn and pause functionality.

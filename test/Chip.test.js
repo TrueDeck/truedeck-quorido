@@ -1,4 +1,4 @@
-const { shouldFail, BN } = require('openzeppelin-test-helpers');
+const { expectRevert, BN } = require('openzeppelin-test-helpers');
 const { initializeChip } = require('./helpers');
 const should = require('chai').should();
 
@@ -30,13 +30,13 @@ contract('Chip', function ([_, deployer, initialHolder, minterA, minterB, pauser
 
             context('initializing', async function () {
                 it('reverts if created with no minters', async function () {
-                    await shouldFail.reverting(
+                    await expectRevert.unspecified(
                         initializeChip(this.chip, name, symbol, decimals, initialSupply, initialHolder, [], pausers, deployer)
                     );
                 });
 
                 it('reverts if created with no pausers', async function () {
-                    await shouldFail.reverting(
+                    await expectRevert.unspecified(
                         initializeChip(this.chip, name, symbol, decimals, initialSupply, initialHolder, minters, [], deployer)
                     );
                 });

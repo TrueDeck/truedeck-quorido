@@ -1,5 +1,5 @@
-const { expectEvent, shouldFail } = require('openzeppelin-test-helpers');
-const { shouldBehaveLikePublicRole } = require('openzeppelin-eth/test/behaviors/access/roles/PublicRole.behavior');
+const { expectEvent, expectRevert } = require('openzeppelin-test-helpers');
+const { shouldBehaveLikePublicRole } = require('./behaviors/access/roles/PublicRole.behavior');
 const should = require('chai').should();
 
 const Manageable = artifacts.require('ManageableMock');
@@ -48,7 +48,7 @@ contract('Manageable', function ([_, owner, manager, otherManager, anyone, ...ot
                     });
 
                     it('cannot take drastic measure in non-pause', async function () {
-                        await shouldFail.reverting(this.manageable.drasticMeasure({ from: anyone }));
+                        await expectRevert.unspecified(this.manageable.drasticMeasure({ from: anyone }));
                         (await this.manageable.drasticMeasureTaken()).should.equal(false);
                     });
 
@@ -59,7 +59,7 @@ contract('Manageable', function ([_, owner, manager, otherManager, anyone, ...ot
                         });
 
                         it('reverts when pausing from non-manager', async function () {
-                            await shouldFail.reverting(this.manageable.pause({ from: anyone }));
+                            await expectRevert.unspecified(this.manageable.pause({ from: anyone }));
                         });
 
                         context('when paused', function () {
@@ -72,7 +72,7 @@ contract('Manageable', function ([_, owner, manager, otherManager, anyone, ...ot
                             });
 
                             it('cannot perform normal process in pause', async function () {
-                                await shouldFail.reverting(this.manageable.normalProcess({ from: anyone }));
+                                await expectRevert.unspecified(this.manageable.normalProcess({ from: anyone }));
                             });
 
                             it('can take a drastic measure in a pause', async function () {
@@ -81,7 +81,7 @@ contract('Manageable', function ([_, owner, manager, otherManager, anyone, ...ot
                             });
 
                             it('reverts when re-pausing', async function () {
-                                await shouldFail.reverting(this.manageable.pause({ from: manager }));
+                                await expectRevert.unspecified(this.manageable.pause({ from: manager }));
                             });
 
                             describe('unpausing', function () {
@@ -91,7 +91,7 @@ contract('Manageable', function ([_, owner, manager, otherManager, anyone, ...ot
                                 });
 
                                 it('reverts when unpausing from non-manager', async function () {
-                                    await shouldFail.reverting(this.manageable.unpause({ from: anyone }));
+                                    await expectRevert.unspecified(this.manageable.unpause({ from: anyone }));
                                 });
 
                                 context('when unpaused', function () {
@@ -110,11 +110,11 @@ contract('Manageable', function ([_, owner, manager, otherManager, anyone, ...ot
                                     });
 
                                     it('should prevent drastic measure', async function () {
-                                        await shouldFail.reverting(this.manageable.drasticMeasure({ from: anyone }));
+                                        await expectRevert.unspecified(this.manageable.drasticMeasure({ from: anyone }));
                                     });
 
                                     it('reverts when re-unpausing', async function () {
-                                        await shouldFail.reverting(this.manageable.unpause({ from: manager }));
+                                        await expectRevert.unspecified(this.manageable.unpause({ from: manager }));
                                     });
                                 });
                             });

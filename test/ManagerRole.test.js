@@ -1,4 +1,4 @@
-const { shouldBehaveLikePublicRole } = require('openzeppelin-eth/test/behaviors/access/roles/PublicRole.behavior');
+const { shouldBehaveLikePublicRole } = require('./behaviors/access/roles/PublicRole.behavior');
 const should = require('chai').should();
 
 const ManagerRole = artifacts.require('ManagerRoleMock');
