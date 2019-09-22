@@ -25,6 +25,13 @@ code {
   align-items: center;
 }
 
+.boxContainer {
+  display: flex;
+  flex-flow: row wrap;
+  width: 90%;
+  justify-content: space-around;
+}
+
 .setup,
 .contracts {
   width: 100%;
