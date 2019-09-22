@@ -9,7 +9,7 @@ const BN = web3.utils.BN;
 const name = 'Chip';
 const symbol = 'CHIP';
 const decimals = web3.utils.toHex(new BN(18));
-const initialSupply = web3.utils.toHex(new BN(1000000));   // 1 million
+const initialSupply = web3.utils.toHex(web3.utils.toWei(new BN(1000000), 'ether'));   // 1 million
 
 async function main() {
   /* Initialize OpenZeppelin's Web3 provider. */
@@ -21,10 +21,16 @@ async function main() {
   const Dice = Contracts.getFromLocal('Dice');
 
   /* Retrieve a couple of addresses to interact with the contracts. */
-  const [deployer, owner, signer] = await ZWeb3.accounts();
+  const [_, owner, signer, deployer] = await ZWeb3.accounts();
 
   /* Create a SimpleProject to interact with OpenZeppelin programmatically. */
   const quorido = new SimpleProject('Quorido', null, { from: deployer });
+
+  console.log('Accounts:');
+  console.log('  - Deployer: ', deployer);
+  console.log('  - Owner:    ', owner);
+  console.log('  - Signer:   ', signer);
+  console.log('');
 
   /* Deploy the Chip contract with a proxy that allows upgrades. Initialize it by setting the values. */
   const chipInstance = await quorido.createProxy(Chip, { initArgs: [name, symbol, decimals, initialSupply, owner, [owner], [owner]] });

@@ -26,7 +26,7 @@ if (mode === "profile") {
   );
   global.profilerSubprovider.stop();
   provider.addProvider(global.profilerSubprovider);
-  provider.addProvider(new WebsocketSubprovider({ rpcUrl: "http://localhost:9545" }));
+  provider.addProvider(new WebsocketSubprovider({ rpcUrl: "http://localhost:8545" }));
 } else {
   if (mode === "coverage") {
     global.coverageSubprovider = new CoverageSubprovider(
@@ -52,7 +52,7 @@ if (mode === "profile") {
     );
     provider.addProvider(revertTraceSubprovider);
   }
-  provider.addProvider(new WebsocketSubprovider({ rpcUrl: "http://localhost:9545" }))
+  provider.addProvider(new WebsocketSubprovider({ rpcUrl: "http://localhost:8545" }))
 }
 provider.start(err => {
   if (err !== undefined) {
