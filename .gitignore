@@ -60,8 +60,9 @@ typings/
 # next.js build output
 .next
 
-# zos sessions
-zos.dev-*
+# openzeppelin sessions
+.openzeppelin/.session
+.openzeppelin/dev-*
 
 # contracts build
 build
@@ -69,7 +70,3 @@ build
 
 # IDE files
 .idea/
-
-.zos.session
-
-.openzeppelin/.session
