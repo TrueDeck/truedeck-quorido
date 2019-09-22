@@ -3,7 +3,7 @@ Multi-Blockchain Provably Fair Casino Platform by TrueDeck
 
 ## Requirements
 
-Install ZeppelinOS, Ganache, and Truffle
+Install Truffle, Ganache, and OpenZeppelin 
 
 ```bash
 npm install -g truffle@5.0.2 ganache-cli@6.3.0 @openzeppelin/cli@2.5.0
@@ -19,7 +19,7 @@ npm install -g truffle@5.0.2 ganache-cli@6.3.0 @openzeppelin/cli@2.5.0
 In a new terminal window, run your local blockchain:
 
 ```bash
-ganache-cli --deterministic --port 8545
+ganache-cli --deterministic
 ```
 
 Compile smart-contracts:
@@ -28,10 +28,10 @@ Compile smart-contracts:
 truffle compile
 ```
 
-Deploy Quorido OpenZeppelin Project on your local blockchain:
+Deploy Contracts (Chip, Bankroll and Dice) using OpenZeppelin CLI:
 
 ```bash
-truffle exec scripts/deploy.js --network local
+openzeppelin create
 ```
 
 In a new terminal window, in the `client` directory, run the React app:
@@ -46,7 +46,7 @@ npm run start
 In a new terminal window, run your local blockchain:
 
 ```bash
-ganache-cli --deterministic --port 9545
+ganache-cli --deterministic
 ```
 
 ### Solidity Tests
