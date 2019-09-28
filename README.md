@@ -83,6 +83,7 @@ npm run coverage
 npm run profile
 ```
 
+
 Both coverage and profile commands will generate the HTML report and open it in the default browser. You can use any other istanbul reporter too. (text, json, etc.).
 
 ## Licence
