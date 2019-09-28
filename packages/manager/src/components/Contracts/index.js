@@ -4,7 +4,7 @@ import { Box, Card, Heading } from 'rimble-ui';
 import ContractInfo from '../ContractInfo';
 
 const Contracts = (props) => (
-  <Box p={2} width={1/3}>
+  <Box p={2}>
     <Card flexDirection="column">
       <Heading.h3>Contracts</Heading.h3>
       <ContractInfo contractName="Chip" {...props} />

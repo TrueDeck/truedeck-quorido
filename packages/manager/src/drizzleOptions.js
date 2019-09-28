@@ -11,34 +11,34 @@ const drizzleOptions = {
     },
   },
   contracts: [
-//    Chip,
-//    Bankroll,
-//    Dice
+    Chip,
+    Bankroll,
+    Dice
   ],
   events: {
-//    Chip: [
-//      'Transfer',
-//      'Approval'
-//    ],
-//    Bankroll: [
-//      'OwnershipTransferred',
-//      'ManagerAdded',
-//      'ManagerRemoved',
-//      'Paused',
-//      'Unpaused',
-//      'WithdrawerAdded',
-//      'WithdrawerRemoved'
-//    ],
-//    Dice: [
-//      'OwnershipTransferred',
-//      'ManagerAdded',
-//      'ManagerRemoved',
-//      'Paused',
-//      'Unpaused',
-//      'SignerAdded',
-//      'SignerRemoved',
-//      'Proved'
-//    ]
+    Chip: [
+      'Transfer',
+      'Approval'
+    ],
+    Bankroll: [
+      'OwnershipTransferred',
+      'ManagerAdded',
+      'ManagerRemoved',
+      'Paused',
+      'Unpaused',
+      'WithdrawerAdded',
+      'WithdrawerRemoved'
+    ],
+    Dice: [
+      'OwnershipTransferred',
+      'ManagerAdded',
+      'ManagerRemoved',
+      'Paused',
+      'Unpaused',
+      'SignerAdded',
+      'SignerRemoved',
+      'Proved'
+    ]
   },
   polls: {
     accounts: 1500,
