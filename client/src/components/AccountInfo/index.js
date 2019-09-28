@@ -3,7 +3,7 @@ import { Box, Flex, Heading, Text, EthAddress } from 'rimble-ui';
 import { newContextComponents } from '@drizzle/react-components';
 const { AccountData } = newContextComponents;
 
-const AccountInfo = ({ drizzle, drizzleState, accountName, accountIndex }) => (
+const AccountInfo = ({ accountName, accountIndex, drizzle, drizzleState }) => (
   <AccountData
     drizzle={drizzle}
     drizzleState={drizzleState}
@@ -11,7 +11,7 @@ const AccountInfo = ({ drizzle, drizzleState, accountName, accountIndex }) => (
     units="ether"
     precision={4}
     render={({ address, balance, units }) => (
-      <Box p={2}>
+      <Box pt={3}>
         <Flex justifyContent="space-between" alignItems="center">
           <Box><Heading.h5>{accountName}</Heading.h5></Box>
           <Text>{"Balance: "}{balance}{" "}{units}</Text>

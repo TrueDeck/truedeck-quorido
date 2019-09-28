@@ -83,6 +83,11 @@ npm run coverage
 npm run profile
 ```
 
+(0) 0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1 (~100 ETH)
+(1) 0xffcf8fdee72ac11b5c542428b35eef5769c409f0 (~100 ETH)
+(2) 0x22d491bde2303f2f43325b2108d26f1eaba1e32b (~100 ETH)
+
+
 Both coverage and profile commands will generate the HTML report and open it in the default browser. You can use any other istanbul reporter too. (text, json, etc.).
 
 ## Licence
