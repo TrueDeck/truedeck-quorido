@@ -9,7 +9,7 @@ const ContractInfo = ({ drizzle, drizzleState, contractName }) => {
   const address = deployed && drizzle.contracts[contractName].address;
 
   return (
-    <Box pt={3}>
+    <Box pt={2}>
       <Flex justifyContent="space-between" alignItems="center">
         <Box><Heading.h5>{contractName}</Heading.h5></Box>
         <Flex>
