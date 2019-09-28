@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import styles from './BalanceInfo.module.scss';
 
 export default function BalanceInfo({ lib, player, owner, chip, bankroll }) {
   const [playerEthBalance, setPlayerEthBalance] = useState('Unknown');
