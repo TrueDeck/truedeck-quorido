@@ -8,7 +8,7 @@ const Accounts = (props) => (
     <Card flexDirection="column">
       <Heading.h3>Accounts</Heading.h3>
       <AccountInfo accountName="Player" accountIndex={0} {...props} />
-      <AccountInfo accountName="Owner" accountIndex={1} {...props} />
+      <AccountInfo accountName="Owner / Manager" accountIndex={1} {...props} />
     </Card>
   </Box>
 );
