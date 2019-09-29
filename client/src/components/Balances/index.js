@@ -11,7 +11,7 @@ const Balances = (props) => {
   const bankroll = props.drizzle.contracts.Bankroll.address;
 
   return (
-    <Box p={2} minWidth="350px">
+    <Box p={2} minWidth="350px" maxWidth="350px">
       <Card flexDirection="column">
         <Box>
           <Heading.h3>Balances</Heading.h3>
@@ -27,6 +27,10 @@ const Balances = (props) => {
             spenderAddress={bankroll}
             {...props}
           />
+        </Box>
+        <Box mt={4}>
+          <Heading.h3>Game Balances</Heading.h3>
+          <GameBalance gameName="Dice" accountAddress={player} {...props} />
         </Box>
       </Card>
     </Box>
@@ -70,6 +74,33 @@ const ChipAllowance = ({ accountAddress, spenderName, spenderAddress, drizzle, d
         contract="Chip"
         method="allowance"
         methodArgs={[accountAddress, spenderAddress]}
+        render={data => {
+          const balance = drizzle.web3.utils.fromWei(data, "ether");
+          return <span>{balance}</span>;
+        }}
+      />
+      {" "}
+      <ContractData
+        drizzle={drizzle}
+        drizzleState={drizzleState}
+        contract="Chip"
+        method="symbol"
+        hideIndicator
+      />
+    </Text>
+  </Flex>
+);
+
+const GameBalance = ({ gameName, accountAddress, drizzle, drizzleState }) => (
+  <Flex pt={2} justifyContent="space-between" alignItems="center">
+    <Box><Heading.h5>{gameName}{": "}</Heading.h5></Box>
+    <Text>
+      <ContractData
+        drizzle={drizzle}
+        drizzleState={drizzleState}
+        contract={gameName}
+        method="balanceOf"
+        methodArgs={[accountAddress]}
         render={data => {
           const balance = drizzle.web3.utils.fromWei(data, "ether");
           return <span>{balance}</span>;

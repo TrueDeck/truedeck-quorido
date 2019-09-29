@@ -11,7 +11,7 @@ const AccountInfo = ({ accountName, accountIndex, drizzle, drizzleState }) => (
     units="ether"
     precision={4}
     render={({ address, balance, units }) => (
-      <Box pt={3}>
+      <Box pt={2}>
         <Flex justifyContent="space-between" alignItems="center">
           <Box><Heading.h5>{accountName}</Heading.h5></Box>
           <Text>{"Balance: "}{balance}{" "}{units}</Text>
