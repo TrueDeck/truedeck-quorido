@@ -2,7 +2,6 @@
   "name": "truedeck-quorido",
   "version": "1.0.1",
   "description": "Multi-Blockchain Provably Fair Casino Platform by TrueDeck",
-  "main": "client/index.js",
   "scripts": {
     "trace": "MODE=trace truffle test",
     "coverage": "npm run clean && MODE=coverage truffle test; istanbul report html && opn coverage/index.html",
