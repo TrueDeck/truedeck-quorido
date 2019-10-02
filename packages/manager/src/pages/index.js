@@ -1,14 +1,14 @@
 import React from "react"
-import { Heading } from "rimble-ui"
 
 import Layout from "@components/layout"
 import SEO from "@components/seo"
+import AdminContainer from "@containers/AdminContainer"
 
-const IndexPage = () => (
+const SecondPage = () => (
   <Layout>
-    <SEO title="Home" />
-    <Heading.h1>Player Page</Heading.h1>
+    <SEO title="Admin" />
+    <AdminContainer />
   </Layout>
 )
 
-export default IndexPage
+export default SecondPage

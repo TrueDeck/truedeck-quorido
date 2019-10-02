@@ -1,7 +1,13 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "bootstrap": "git clean -fdx packages && lerna bootstrap",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "check-format": "prettier --check \"**/*.{js,jsx,json,md}\""
+  },
   "devDependencies": {
-    "lerna": "^3.16.4"
+    "lerna": "^3.16.4",
+    "prettier": "^1.18.2"
   }
 }
