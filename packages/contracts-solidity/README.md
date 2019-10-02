@@ -1,9 +1,10 @@
 # TrueDeck Quorido
+
 Multi-Blockchain Provably Fair Casino Platform by TrueDeck
 
 ## Requirements
 
-Install Truffle, Ganache, and OpenZeppelin 
+Install Truffle, Ganache, and OpenZeppelin
 
 ```bash
 npm install -g truffle@5.0.2 ganache-cli@6.3.0 @openzeppelin/cli@2.5.0
@@ -68,12 +69,12 @@ npm run trace
 ```bash
 npm run coverage
 ```
+
 ## Sol-profiler
 
 ```bash
 npm run profile
 ```
-
 
 Both coverage and profile commands will generate the HTML report and open it in the default browser. You can use any other istanbul reporter too. (text, json, etc.).
 

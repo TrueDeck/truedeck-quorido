@@ -1,5 +1,5 @@
-const { DiceGameDataEncoder } = require('./DiceGameDataEncoder');
+const { DiceGameDataEncoder } = require("./DiceGameDataEncoder")
 
 module.exports = {
-    DiceGameDataEncoder
-};
+  DiceGameDataEncoder,
+}
