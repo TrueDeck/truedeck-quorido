@@ -34,11 +34,11 @@ Deploy Contracts (Chip, Bankroll and Dice) using OpenZeppelin CLI:
 openzeppelin create
 ```
 
-In a new terminal window, in the `client` directory, run the React app:
+In a new terminal window, in the `client` directory, run the Gatsby app:
 
 ```bash
 cd client
-npm run start
+gatsby develop
 ```
 
 ## Test
@@ -53,15 +53,6 @@ ganache-cli --deterministic
 
 ```bash
 npm test
-```
-
-### React Tests
-Jest is included for testing React components. Compile your contracts before running Jest, or you may receive some file not found errors.
-
-```javascript
-truffle compile
-cd client
-npm run test
 ```
 
 ## Sol-trace
