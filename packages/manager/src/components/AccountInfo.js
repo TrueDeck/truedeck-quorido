@@ -1,7 +1,7 @@
-import React from 'react';
-import { Box, Flex, Heading, Text, EthAddress } from 'rimble-ui';
-import { newContextComponents } from '@drizzle/react-components';
-const { AccountData } = newContextComponents;
+import React from "react"
+import { Box, Flex, Heading, Text, EthAddress } from "rimble-ui"
+import { newContextComponents } from "@drizzle/react-components"
+const { AccountData } = newContextComponents
 
 const AccountInfo = ({ accountName, accountIndex, drizzle, drizzleState }) => (
   <AccountData
@@ -13,8 +13,13 @@ const AccountInfo = ({ accountName, accountIndex, drizzle, drizzleState }) => (
     render={({ address, balance, units }) => (
       <Box pt={2}>
         <Flex justifyContent="space-between" alignItems="center">
-          <Box><Heading.h5>{accountName}</Heading.h5></Box>
-          <Text>{"Balance: "}{balance}{" "}{units}</Text>
+          <Box>
+            <Heading.h5>{accountName}</Heading.h5>
+          </Box>
+          <Text>
+            {"Balance: "}
+            {balance} {units}
+          </Text>
         </Flex>
         <div>
           <EthAddress address={address} />
@@ -22,6 +27,6 @@ const AccountInfo = ({ accountName, accountIndex, drizzle, drizzleState }) => (
       </Box>
     )}
   />
-);
+)
 
-export default AccountInfo;
+export default AccountInfo
