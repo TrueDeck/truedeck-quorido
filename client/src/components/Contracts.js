@@ -1,9 +1,9 @@
-import React from 'react';
-import { Box, Card, Heading } from 'rimble-ui';
+import React from "react"
+import { Box, Card, Heading } from "rimble-ui"
 
-import ContractInfo from '../ContractInfo';
+import ContractInfo from "@components/ContractInfo"
 
-const Contracts = (props) => (
+const Contracts = props => (
   <Box p={2}>
     <Card flexDirection="column">
       <Heading.h3>Contracts</Heading.h3>
@@ -12,6 +12,6 @@ const Contracts = (props) => (
       <ContractInfo contractName="Dice" {...props} />
     </Card>
   </Box>
-);
+)
 
-export default Contracts;
+export default Contracts
