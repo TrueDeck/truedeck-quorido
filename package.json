@@ -1,13 +1,17 @@
 {
-  "name": "root",
+  "name": "truedeck-quorido",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "bootstrap": "git clean -fdx packages && lerna bootstrap",
-    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
-    "check-format": "prettier --check \"**/*.{js,jsx,json,md}\""
+    "install:all": "yarn install",
+    "remove_node_modules": "lerna clean --yes; rm -rf node_modules",
+    "format": "prettier --write '**/*.{js,jsx,json,md}' --config .prettierrc"
   },
   "devDependencies": {
     "lerna": "^3.16.4",
     "prettier": "^1.18.2"
-  }
+  },
+  "version": "0.0.0"
 }
