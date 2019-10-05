@@ -1,83 +1,54 @@
-# TrueDeck Quorido
+# `@truedeck/quorido-contracts-solidity`
 
-Multi-Blockchain Provably Fair Casino Platform by TrueDeck
+OpenZeppelin Upgradable Solidity Contracts for Multi-Blockchain Provably Fair Casino Platform by TrueDeck
 
 ## Requirements
+- First clone and setup the monorepo, as described [here](https://github.com/TrueDeck/truedeck-quorido#readme).
 
-Install Truffle, Ganache, and OpenZeppelin
+## Develop
+After setting up the monorepo, you can start making changes to Solidity Smart-Contracts and Tests.
 
+### Test
+Solidity Smart-Contract Tests can be run by: 
 ```bash
-npm install -g truffle@5.0.2 ganache-cli@6.3.0 @openzeppelin/cli@2.5.0
+cd truedeck-quorido/packages/contract-solidity
+yarn test
 ```
 
-## Getting Started
-
-- Clone the repository
-- Install packages in both root and client folder.
-
-## Run
-
-In a new terminal window, run your local blockchain:
-
+### Trace, Coverage and Profile
+First, navigate to `contracts-solidity` directory:
 ```bash
-ganache-cli --deterministic
+cd truedeck-quorido/packages/contract-solidity
 ```
 
-Compile smart-contracts:
-
+Use below commands to:
+- Trace a failed transaction
 ```bash
-truffle compile
+yarn trace
 ```
-
-Deploy Contracts (Chip, Bankroll and Dice) using OpenZeppelin CLI:
-
+- Run coverage and view report
 ```bash
-openzeppelin create
+yarn coverage
 ```
-
-In a new terminal window, in the `client` directory, run the Gatsby app:
-
+- Profile smart-contracts and view report
 ```bash
-cd client
-gatsby develop
+yarn profile
 ```
+*Both coverage and profile commands will generate the HTML report and open it in the default browser. You can use any other istanbul reporter too. (text, json, etc.).*
 
-## Test
-
-In a new terminal window, run your local blockchain:
-
+## Deploy
+First, navigate to `contracts-solidity` directory:
 ```bash
-ganache-cli --deterministic
+cd truedeck-quorido/packages/contract-solidity
 ```
-
-### Solidity Tests
-
+Run a local blockchain:
 ```bash
-npm test
+yarn blockchain:start
 ```
-
-## Sol-trace
-
-Now we don't need to check all the require and revert statements but we know exactly which one reverted and who called it.
-
+Deploy contracts on the local blockchain: 
 ```bash
-npm run trace
+yarn contracts:create
 ```
-
-## Sol-coverage
-
-```bash
-npm run coverage
-```
-
-## Sol-profiler
-
-```bash
-npm run profile
-```
-
-Both coverage and profile commands will generate the HTML report and open it in the default browser. You can use any other istanbul reporter too. (text, json, etc.).
 
 ## Licence
-
 MIT
