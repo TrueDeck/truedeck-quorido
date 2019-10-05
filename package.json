@@ -1,11 +1,18 @@
 {
   "name": "truedeck-quorido",
   "private": true,
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=6.12"
+  },
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "install:all": "yarn install",
+    "blockchain:start": "lerna run blockchain:start --stream",
+    "contracts:create": "lerna run contracts:create",
+    "dapp:develop": "lerna run dapp:develop --stream",
+    "test": "lerna run test",
     "remove_node_modules": "lerna clean --yes; rm -rf node_modules",
     "format": "prettier --write '**/*.{js,jsx,json,md}' --config .prettierrc"
   },
@@ -13,5 +20,14 @@
     "lerna": "^3.16.4",
     "prettier": "^1.18.2"
   },
-  "version": "0.0.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrueDeck/truedeck-quorido.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TrueDeck/truedeck-quorido/issues"
+  },
+  "homepage": "https://github.com/TrueDeck/truedeck-quorido#readme",
+  "author": "truedeckdev",
+  "license": "MIT"
 }

@@ -6,7 +6,7 @@ import AdminContainer from "@containers/AdminContainer"
 
 const SecondPage = () => (
   <Layout>
-    <SEO title="Admin" />
+    <SEO title="Manager" />
     <AdminContainer />
   </Layout>
 )

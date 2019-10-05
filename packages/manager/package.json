@@ -1,9 +1,23 @@
 {
   "name": "@truedeck/quorido-manager",
-  "private": true,
+  "version": "0.0.0",
   "description": "Manager DApp for TrueDeck Quorido.",
-  "version": "1.0.1",
+  "scripts": {
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing \"",
+    "dapp:develop": "gatsby develop --port 8001 --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrueDeck/truedeck-quorido.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TrueDeck/truedeck-quorido/issues"
+  },
+  "homepage": "https://github.com/TrueDeck/truedeck-quorido#readme",
   "author": "truedeckdev",
+  "license": "MIT",
   "dependencies": {
     "@truedeck/quorido-contracts-solidity": "^1.0.1",
     "@drizzle/react-components": "^1.5.0",
@@ -24,21 +38,5 @@
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-helmet": "^5.2.1"
-  },
-  "license": "MIT",
-  "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
-    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
-    "start": "npm run develop",
-    "serve": "gatsby serve",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing \""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TrueDeck/truedeck-quorido.git"
-  },
-  "bugs": {
-    "url": "https://github.com/TrueDeck/truedeck-quorido/issues"
   }
 }

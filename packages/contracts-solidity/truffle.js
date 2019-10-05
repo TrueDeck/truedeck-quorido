@@ -1,9 +1,9 @@
 const ProviderEngine = require("web3-provider-engine")
-const WebsocketSubprovider = require("web3-provider-engine/subproviders/websocket.js")
 const { TruffleArtifactAdapter } = require("@0x/sol-trace")
 const { ProfilerSubprovider } = require("@0x/sol-profiler")
 const { CoverageSubprovider } = require("@0x/sol-coverage")
 const { RevertTraceSubprovider } = require("@0x/sol-trace")
+const { GanacheSubprovider } = require("@0x/subproviders")
 
 const HDWalletProvider = require("truffle-hdwallet-provider")
 const path = require("path")
@@ -26,12 +26,9 @@ if (mode === "profile") {
   )
   global.profilerSubprovider.stop()
   provider.addProvider(global.profilerSubprovider)
-  provider.addProvider(
-    new WebsocketSubprovider({ rpcUrl: "http://localhost:8545" })
-  )
 } else {
   if (mode === "coverage") {
-    global.coverageSubprovider = new CoverageSubprovider(
+    const coverageSubprovider = new CoverageSubprovider(
       artifactAdapter,
       defaultFromAddress,
       {
@@ -45,7 +42,7 @@ if (mode === "profile") {
         ],
       }
     )
-    provider.addProvider(global.coverageSubprovider)
+    provider.addProvider(coverageSubprovider)
   } else if (mode === "trace") {
     const revertTraceSubprovider = new RevertTraceSubprovider(
       artifactAdapter,
@@ -54,16 +51,16 @@ if (mode === "profile") {
     )
     provider.addProvider(revertTraceSubprovider)
   }
-  provider.addProvider(
-    new WebsocketSubprovider({ rpcUrl: "http://localhost:8545" })
-  )
 }
+provider.addProvider(new GanacheSubprovider())
+
 provider.start(err => {
   if (err !== undefined) {
     console.log(err)
     process.exit(1)
   }
 })
+
 /**
  * HACK: Truffle providers should have `send` function, while `ProviderEngine` creates providers with `sendAsync`,
  * but it can be easily fixed by assigning `sendAsync` to `send`.
