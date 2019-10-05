@@ -1,6 +1,6 @@
 {
   "name": "@truedeck/quorido-contracts-solidity",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "OpenZeppelin Solidity Contracts for TrueDeck Quorido, a Multi-Blockchain Provably Fair Casino Platform by TrueDeck",
   "scripts": {
     "test": "truffle test",
@@ -37,11 +37,11 @@
     "web3-provider-engine": "^14.1.0"
   },
   "devDependencies": {
-    "chai": "4.2.0",
-    "openzeppelin-test-helpers": "^0.4.3",
     "@openzeppelin/cli": "^2.5.3",
-    "truffle": "5.0.2",
+    "chai": "4.2.0",
     "ganache-cli": "^6.4.3",
-    "ganache-core": "^2.5.1"
+    "ganache-core": "^2.5.1",
+    "openzeppelin-test-helpers": "^0.4.3",
+    "truffle": "5.0.2"
   }
 }

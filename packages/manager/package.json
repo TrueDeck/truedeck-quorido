@@ -1,6 +1,6 @@
 {
   "name": "@truedeck/quorido-manager",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Manager DApp for TrueDeck Quorido.",
   "scripts": {
     "build": "gatsby build",
@@ -19,13 +19,10 @@
   "author": "truedeckdev",
   "license": "MIT",
   "dependencies": {
-    "@truedeck/quorido-contracts-solidity": "^1.0.1",
     "@drizzle/react-components": "^1.5.0",
     "@drizzle/react-plugin": "^1.5.0",
     "@drizzle/store": "^1.5.0",
-    "rimble-ui": "^0.9.8",
-    "styled-components": "^4.3.2",
-    "web3": "^1.2.1",
+    "@truedeck/quorido-contracts-solidity": "^1.0.1",
     "gatsby": "^2.15.28",
     "gatsby-image": "^2.2.23",
     "gatsby-plugin-manifest": "^2.2.20",
@@ -37,6 +34,9 @@
     "prop-types": "^15.7.2",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
-    "react-helmet": "^5.2.1"
+    "react-helmet": "^5.2.1",
+    "rimble-ui": "^0.9.8",
+    "styled-components": "^4.3.2",
+    "web3": "^1.2.1"
   }
 }
