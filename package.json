@@ -9,6 +9,7 @@
     "packages/*"
   ],
   "scripts": {
+    "bootstrap": "npx lerna bootstrap && lerna link",
     "blockchain:start": "lerna run blockchain:start --stream",
     "contracts:create": "lerna run contracts:create",
     "dapp:develop": "lerna run dapp:develop --stream",

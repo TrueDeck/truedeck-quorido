@@ -1,4 +1,6 @@
 **/.cache
+**/.openzeppelin
+**/build
 **/package.json
 **/package-lock.json
 **/public
