@@ -1,6 +1,6 @@
 {
   "name": "@truedeck/quorido-manager",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Manager DApp for TrueDeck Quorido.",
   "scripts": {
     "build": "gatsby build",
@@ -22,7 +22,7 @@
     "@drizzle/react-components": "^1.5.0",
     "@drizzle/react-plugin": "^1.5.0",
     "@drizzle/store": "^1.5.0",
-    "@truedeck/quorido-contracts-solidity": "^0.1.0",
+    "@truedeck/quorido-contracts-solidity": "^0.1.2",
     "gatsby": "^2.15.28",
     "gatsby-image": "^2.2.23",
     "gatsby-plugin-manifest": "^2.2.20",

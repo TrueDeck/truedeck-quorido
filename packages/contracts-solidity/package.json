@@ -1,6 +1,6 @@
 {
   "name": "@truedeck/quorido-contracts-solidity",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "OpenZeppelin Solidity Contracts for TrueDeck Quorido, a Multi-Blockchain Provably Fair Casino Platform by TrueDeck",
   "scripts": {
     "test": "truffle test",
