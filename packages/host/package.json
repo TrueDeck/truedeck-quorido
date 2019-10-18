@@ -1,0 +1,18 @@
+{
+  "name": "@truedeck/quorido-host",
+  "version": "0.1.2",
+  "description": "Host server for TrueDeck Quorido.",
+  "author": "truedeckdev <truedeck@protonmail.com>",
+  "homepage": "https://github.com/TrueDeck/truedeck-quorido#readme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrueDeck/truedeck-quorido.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/TrueDeck/truedeck-quorido/issues"
+  }
+}
