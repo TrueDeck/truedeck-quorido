@@ -15,7 +15,8 @@
     "dapp:develop": "lerna run dapp:develop --stream",
     "test": "lerna run test",
     "remove_node_modules": "lerna clean --yes; rm -rf node_modules",
-    "format": "prettier --write '**/*.{js,jsx,json,md}' --config .prettierrc"
+    "format": "prettier --write '**/*.{js,jsx,json,md}' --config .prettierrc",
+    "pre-commit": "yarn format"
   },
   "devDependencies": {
     "lerna": "^3.16.4",
