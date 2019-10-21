@@ -27,5 +27,8 @@
   },
   "bugs": {
     "url": "https://github.com/TrueDeck/truedeck-quorido/issues"
+  },
+  "dependencies": {
+    "web3": "^1.2.1"
   }
 }
