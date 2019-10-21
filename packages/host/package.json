@@ -8,11 +8,6 @@
   "scripts": {
     "test": "DYNAMODB_TABLE=truedeck-quorido-host-app-table-dev jest"
   },
-  "jest": {
-    "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
-    }
-  },
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/plugin-transform-runtime": "^7.6.2",

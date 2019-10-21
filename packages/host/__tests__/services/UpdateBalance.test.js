@@ -1,5 +1,5 @@
-import ddb from "../../services/DynamoDb"
-import updateBalance from "../../services/UpdateBalance"
+import ddb from "@services/DynamoDb"
+import updateBalance from "@services/UpdateBalance"
 
 describe("UpdateBalance", function() {
   it("should update balance of a player", async () => {
