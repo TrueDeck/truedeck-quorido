@@ -15,7 +15,7 @@ function updateBalance(player, game, token, amount) {
     },
   }
 
-  return ddb.put(params)
+  return ddb.put(params).promise()
 }
 
 export default updateBalance

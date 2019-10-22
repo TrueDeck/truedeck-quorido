@@ -15,7 +15,7 @@ function updateGameHash(player, game, token, hash) {
     },
   }
 
-  return ddb.put(params)
+  return ddb.put(params).promise()
 }
 
 export default updateGameHash

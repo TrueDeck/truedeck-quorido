@@ -50,7 +50,7 @@ describe("UpdateGameHash", function() {
       const token = getRandomAddress()
       const hash = getRandomHex(32)
 
-      await updateGameHash(player, game, token, hash).promise()
+      await updateGameHash(player, game, token, hash)
 
       const params = {
         TableName: process.env.DYNAMODB_TABLE,

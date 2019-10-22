@@ -50,7 +50,7 @@ describe("UpdateBalance", function() {
       const token = getRandomAddress()
       const amount = getRandomUint256()
 
-      await updateBalance(player, game, token, amount).promise()
+      await updateBalance(player, game, token, amount)
 
       const params = {
         TableName: process.env.DYNAMODB_TABLE,
