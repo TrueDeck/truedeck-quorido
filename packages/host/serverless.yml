@@ -22,6 +22,8 @@ org: truedeck
 
 plugins:
   - serverless-webpack
+  - serverless-dynamodb-local
+  - serverless-offline
 
 provider:
   name: aws

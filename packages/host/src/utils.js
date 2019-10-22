@@ -41,6 +41,10 @@ function getRandomAddress() {
   return web3.utils.randomHex(20)
 }
 
+function getRandomHex(size) {
+  return web3.utils.randomHex(size)
+}
+
 function getInvalidAddress() {
   const invalidAddress = [
     ZERO_ADDRESS,
@@ -64,6 +68,7 @@ export {
   getInvalidArgumentError,
   validateAddress,
   getRandomAddress,
+  getRandomHex,
   getInvalidAddress,
   getRandomUint256,
 }
