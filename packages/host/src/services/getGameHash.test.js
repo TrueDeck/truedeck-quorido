@@ -3,7 +3,7 @@ import getGameHash from "./getGameHash"
 import ddb from "./dynamoDb"
 import { getRandomAddress, getInvalidAddress, getRandomHex } from "../utils"
 
-describe("GetGameHash", function() {
+describe("getGameHash", function() {
   it("gets the gamehash", async function() {
     const player = getRandomAddress()
     const game = getRandomAddress()

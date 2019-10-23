@@ -3,7 +3,7 @@ import updateGameHash from "./updateGameHash"
 import ddb from "./dynamoDb"
 import { getRandomAddress, getInvalidAddress, getRandomHex } from "../utils"
 
-describe("UpdateGameHash", function() {
+describe("updateGameHash", function() {
   describe("when player is not a valid address", function() {
     it("rejects", async function() {
       const player = getInvalidAddress()
