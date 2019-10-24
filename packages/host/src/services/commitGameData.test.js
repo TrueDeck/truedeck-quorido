@@ -1,9 +1,9 @@
-import addClientServerData from "./addClientServerData"
+import commitGameData from "./commitGameData"
 
 import ddb from "./dynamoDb"
 import { getRandomAddress, getInvalidAddress, getRandomHex } from "../utils"
 
-describe("addClientServerData", function() {
+describe("commitGameData", function() {
   describe("when player is not a valid address", function() {
     it("rejects", async function() {
       const player = getInvalidAddress()
@@ -13,7 +13,7 @@ describe("addClientServerData", function() {
       const serverSeed = getRandomHex(32)
 
       expect(() =>
-        addClientServerData(player, game, token, clientDataHash, serverSeed)
+        commitGameData(player, game, token, clientDataHash, serverSeed)
       ).toThrowError("Invalid address")
     })
   })
@@ -27,7 +27,7 @@ describe("addClientServerData", function() {
       const serverSeed = getRandomHex(32)
 
       expect(() =>
-        addClientServerData(player, game, token, clientDataHash, serverSeed)
+        commitGameData(player, game, token, clientDataHash, serverSeed)
       ).toThrowError("Invalid address")
     })
   })
@@ -41,7 +41,7 @@ describe("addClientServerData", function() {
       const serverSeed = getRandomHex(32)
 
       expect(() =>
-        addClientServerData(player, game, token, clientDataHash, serverSeed)
+        commitGameData(player, game, token, clientDataHash, serverSeed)
       ).toThrowError("Invalid address")
     })
   })
@@ -59,7 +59,7 @@ describe("addClientServerData", function() {
         .spyOn(global.Date, "now")
         .mockImplementationOnce(() => dateMock.valueOf())
 
-      await addClientServerData(player, game, token, clientDataHash, serverSeed)
+      await commitGameData(player, game, token, clientDataHash, serverSeed)
 
       const now = dateMock.toISOString()
       const params = {
@@ -92,7 +92,7 @@ describe("addClientServerData", function() {
       }
 
       for (let i = 0; i < numberOfEntries; i++) {
-        await addClientServerData(
+        await commitGameData(
           player,
           game,
           token,

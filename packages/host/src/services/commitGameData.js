@@ -1,7 +1,7 @@
 import { validateAddress } from "../utils"
 import ddb from "./dynamoDb"
 
-function addClientServerData(player, game, token, clientDataHash, serverSeed) {
+function commitGameData(player, game, token, clientDataHash, serverSeed) {
   validateAddress(player, "player")
   validateAddress(game, "game")
   validateAddress(token, "token")
@@ -20,4 +20,4 @@ function addClientServerData(player, game, token, clientDataHash, serverSeed) {
   return ddb.put(params).promise()
 }
 
-export default addClientServerData
+export default commitGameData

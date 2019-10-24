@@ -1,7 +1,7 @@
 import getBalance from "./getBalance"
 
 import ddb from "./dynamoDb"
-import { getRandomAddress, getInvalidAddress, getRandomUint256 } from "../utils"
+import { getRandomAddress, getRandomUint256 } from "../utils"
 
 describe("getBalance", function() {
   it("gets the balance", async function() {
