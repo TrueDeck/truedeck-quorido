@@ -4,8 +4,8 @@ async function markGameDataProved(player, game, gamehash) {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Key: {
-      pk: `${player}#${game}#data`,
-      sk: `pending#${gamehash}`,
+      pk: `${player}#${game}#pending`,
+      sk: gamehash,
     },
   }
   const { Item } = await ddb.get(params).promise()
@@ -17,8 +17,8 @@ async function markGameDataProved(player, game, gamehash) {
           Delete: {
             TableName: process.env.DYNAMODB_TABLE,
             Key: {
-              pk: `${player}#${game}#data`,
-              sk: `pending#${gamehash}`,
+              pk: `${player}#${game}#pending`,
+              sk: gamehash,
             },
           },
         },
@@ -26,8 +26,8 @@ async function markGameDataProved(player, game, gamehash) {
           Put: {
             TableName: process.env.DYNAMODB_TABLE,
             Item: {
-              pk: `${player}#${game}#data`,
-              sk: `proved#${gamehash}`,
+              pk: `${player}#${game}#proved`,
+              sk: gamehash,
               attr1: Item.attr1,
               attr2: Item.attr2,
             },

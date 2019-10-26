@@ -37,8 +37,8 @@ describe("markGameDataProved", function() {
       const putParams = {
         TableName: process.env.DYNAMODB_TABLE,
         Item: {
-          pk: `${player}#${game}#data`,
-          sk: `pending#${gamehash}`,
+          pk: `${player}#${game}#pending`,
+          sk: gamehash,
           attr1: now,
           attr2: data,
         },
@@ -49,14 +49,14 @@ describe("markGameDataProved", function() {
       const pendingParams = {
         TableName: process.env.DYNAMODB_TABLE,
         Key: {
-          pk: `${player}#${game}#data`,
-          sk: `pending#${gamehash}`,
+          pk: `${player}#${game}#pending`,
+          sk: gamehash,
         },
       }
       let result = await ddb.get(pendingParams).promise()
       expect(result.Item).toEqual({
-        pk: `${player}#${game}#data`,
-        sk: `pending#${gamehash}`,
+        pk: `${player}#${game}#pending`,
+        sk: gamehash,
         attr1: now,
         attr2: data,
       })
@@ -71,14 +71,14 @@ describe("markGameDataProved", function() {
       const provedParams = {
         TableName: process.env.DYNAMODB_TABLE,
         Key: {
-          pk: `${player}#${game}#data`,
-          sk: `proved#${gamehash}`,
+          pk: `${player}#${game}#proved`,
+          sk: gamehash,
         },
       }
       result = await ddb.get(provedParams).promise()
       expect(result.Item).toEqual({
-        pk: `${player}#${game}#data`,
-        sk: `proved#${gamehash}`,
+        pk: `${player}#${game}#proved`,
+        sk: gamehash,
         attr1: now,
         attr2: data,
       })

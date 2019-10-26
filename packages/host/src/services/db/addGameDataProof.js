@@ -9,8 +9,8 @@ function addGameDataProof(player, game, gamehash, data) {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Item: {
-      pk: `${player}#${game}#data`,
-      sk: `pending#${gamehash}`,
+      pk: `${player}#${game}#pending`,
+      sk: gamehash,
       attr1: now,
       attr2: data,
     },

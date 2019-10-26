@@ -68,15 +68,15 @@ describe("addGameDataProof", function() {
       const params = {
         TableName: process.env.DYNAMODB_TABLE,
         Key: {
-          pk: `${player}#${game}#data`,
-          sk: `pending#${gamehash}`,
+          pk: `${player}#${game}#pending`,
+          sk: gamehash,
         },
       }
       const { Item } = await ddb.get(params).promise()
 
       expect(Item).toEqual({
-        pk: `${player}#${game}#data`,
-        sk: `pending#${gamehash}`,
+        pk: `${player}#${game}#pending`,
+        sk: gamehash,
         attr1: now,
         attr2: data,
       })
@@ -110,15 +110,15 @@ describe("addGameDataProof", function() {
           "#pk": "pk",
         },
         ExpressionAttributeValues: {
-          ":pk": `${player}#${game}#data`,
+          ":pk": `${player}#${game}#pending`,
         },
       }
       const { Items } = await ddb.query(params).promise()
 
       for (let i = 0; i < numberOfEntries; i++) {
         expect(Items[i]).toEqual({
-          pk: `${player}#${game}#data`,
-          sk: `pending#${gamehashes[i]}`,
+          pk: `${player}#${game}#pending`,
+          sk: gamehashes[i],
           attr1: expect.any(String),
           attr2: data[i],
         })
