@@ -1,7 +1,11 @@
 import updateBalance from "./updateBalance"
 
 import ddb from "./dynamoDb"
-import { getRandomAddress, getInvalidAddress, getRandomUint256 } from "../../utils"
+import {
+  getRandomAddress,
+  getInvalidAddress,
+  getRandomUint256,
+} from "../../utils"
 
 describe("updateBalance", function() {
   describe("when player is not a valid address", function() {
