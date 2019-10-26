@@ -1,17 +1,17 @@
-import updateGameHash from "./updateGameHash"
+import updateBalance from "./updateBalance"
 
 import ddb from "./dynamoDb"
-import { getRandomAddress, getInvalidAddress, getRandomHex } from "../utils"
+import { getRandomAddress, getInvalidAddress, getRandomUint256 } from "../../utils"
 
-describe("updateGameHash", function() {
+describe("updateBalance", function() {
   describe("when player is not a valid address", function() {
     it("rejects", async function() {
       const player = getInvalidAddress()
       const game = getRandomAddress()
       const token = getRandomAddress()
-      const hash = getRandomHex(32)
+      const amount = getRandomUint256()
 
-      expect(() => updateGameHash(player, game, token, hash)).toThrowError(
+      expect(() => updateBalance(player, game, token, amount)).toThrowError(
         "Invalid address"
       )
     })
@@ -22,9 +22,9 @@ describe("updateGameHash", function() {
       const player = getRandomAddress()
       const game = getInvalidAddress()
       const token = getRandomAddress()
-      const hash = getRandomHex(32)
+      const amount = getRandomUint256()
 
-      expect(() => updateGameHash(player, game, token, hash)).toThrowError(
+      expect(() => updateBalance(player, game, token, amount)).toThrowError(
         "Invalid address"
       )
     })
@@ -35,9 +35,9 @@ describe("updateGameHash", function() {
       const player = getRandomAddress()
       const game = getRandomAddress()
       const token = getInvalidAddress()
-      const hash = getRandomHex(32)
+      const amount = getRandomUint256()
 
-      expect(() => updateGameHash(player, game, token, hash)).toThrowError(
+      expect(() => updateBalance(player, game, token, amount)).toThrowError(
         "Invalid address"
       )
     })
@@ -48,9 +48,9 @@ describe("updateGameHash", function() {
       const player = getRandomAddress()
       const game = getRandomAddress()
       const token = getRandomAddress()
-      const hash = getRandomHex(32)
+      const amount = getRandomUint256()
 
-      await updateGameHash(player, game, token, hash)
+      await updateBalance(player, game, token, amount)
 
       const params = {
         TableName: process.env.DYNAMODB_TABLE,
@@ -64,7 +64,7 @@ describe("updateGameHash", function() {
       expect(Item).toEqual({
         pk: `${player}#${game}#${token}`,
         sk: `${player}#gamestate`,
-        attr2: hash,
+        attr1: amount,
       })
     })
   })

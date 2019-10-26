@@ -6,7 +6,7 @@ import {
   getInvalidAddress,
   getRandomHex,
   getRandomUint256,
-} from "../utils"
+} from "../../utils"
 
 describe("addGameDataProof", function() {
   describe("when player is not a valid address", function() {

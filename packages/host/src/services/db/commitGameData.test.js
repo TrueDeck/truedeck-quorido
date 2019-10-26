@@ -1,7 +1,7 @@
 import commitGameData from "./commitGameData"
 
 import ddb from "./dynamoDb"
-import { getRandomAddress, getInvalidAddress, getRandomHex } from "../utils"
+import { getRandomAddress, getInvalidAddress, getRandomHex } from "../../utils"
 
 describe("commitGameData", function() {
   describe("when player is not a valid address", function() {

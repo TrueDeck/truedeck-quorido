@@ -1,4 +1,4 @@
-import { validateAddress } from "../utils"
+import { validateAddress } from "../../utils"
 import ddb from "./dynamoDb"
 
 function updateGameHash(player, game, token, hash) {
