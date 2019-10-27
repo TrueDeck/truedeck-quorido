@@ -1,7 +1,7 @@
 import deleteCommittedGameData from "./deleteCommittedGameData"
 
 import ddb from "./dynamoDb"
-import { getRandomAddress, getRandomHex } from "../../utils"
+import { getRandomAddress, getRandomHex, sleep } from "../../utils"
 
 describe("deleteCommittedGameData", function() {
   it("deletes the Committed Game Data", async function() {
@@ -30,6 +30,7 @@ describe("deleteCommittedGameData", function() {
         },
       }
       await ddb.put(params).promise()
+      await sleep(10);
     }
 
     // Verify the data inserted

@@ -4,10 +4,7 @@ import ddb from "./dynamoDb"
 function getCommittedGameData(player, game, token) {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
-    KeyConditionExpression: "#pk = :pk",
-    ExpressionAttributeNames: {
-      "#pk": "pk",
-    },
+    KeyConditionExpression: "pk = :pk",
     ExpressionAttributeValues: {
       ":pk": `${player}#${game}#${token}#hash`,
     },

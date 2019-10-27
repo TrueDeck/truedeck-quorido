@@ -1,7 +1,7 @@
 import getCommittedGameData from "./getCommittedGameData"
 
 import ddb from "./dynamoDb"
-import { getRandomAddress, getRandomHex } from "../../utils"
+import { getRandomAddress, getRandomHex, sleep } from "../../utils"
 
 describe("getCommittedGameData", function() {
   it("gets the Committed Game Data", async function() {
@@ -30,6 +30,7 @@ describe("getCommittedGameData", function() {
         },
       }
       await ddb.put(params).promise()
+      await sleep(10);
     }
 
     // Actual Call

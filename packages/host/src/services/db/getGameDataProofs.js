@@ -1,14 +1,11 @@
 import { validateAddress } from "../../utils"
 import ddb from "./dynamoDb"
 
-function getGameDataProofs(player, game, token) {
+function getGameDataProofs(player, game) {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     IndexName: "lsi1",
-    KeyConditionExpression: "#pk = :pk",
-    ExpressionAttributeNames: {
-      "#pk": "pk",
-    },
+    KeyConditionExpression: "pk = :pk",
     ExpressionAttributeValues: {
       ":pk": `${player}#${game}#pending`
     },

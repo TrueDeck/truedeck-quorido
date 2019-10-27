@@ -63,6 +63,10 @@ function getRandomUint256() {
   ).toString(10)
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export {
   isValidAddress,
   getInvalidArgumentError,
@@ -71,4 +75,5 @@ export {
   getRandomHex,
   getInvalidAddress,
   getRandomUint256,
+  sleep,
 }
