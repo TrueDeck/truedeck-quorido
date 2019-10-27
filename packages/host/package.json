@@ -1,0 +1,36 @@
+{
+  "name": "@truedeck/quorido-host",
+  "version": "0.1.2",
+  "description": "Host server for TrueDeck Quorido.",
+  "author": "truedeckdev <truedeck@protonmail.com>",
+  "homepage": "https://github.com/TrueDeck/truedeck-quorido#readme",
+  "license": "MIT",
+  "scripts": {
+    "test": "DYNAMODB_TABLE=truedeck-quorido-host-app-table-dev jest"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "@shelf/jest-dynamodb": "^1.4.1",
+    "aws-sdk": "^2.553.0",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
+    "jest": "^24.9.0",
+    "serverless-dynamodb-local": "^0.2.38",
+    "serverless-offline": "^5.12.0",
+    "serverless-webpack": "^5.3.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrueDeck/truedeck-quorido.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TrueDeck/truedeck-quorido/issues"
+  },
+  "dependencies": {
+    "web3": "^1.2.1"
+  }
+}
