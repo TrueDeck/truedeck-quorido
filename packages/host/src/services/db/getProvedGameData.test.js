@@ -6,7 +6,7 @@ import {
   getInvalidAddress,
   getRandomHex,
   getRandomUint256,
-  sleep
+  sleep,
 } from "../../utils"
 
 describe("getProvedGameData", function() {
@@ -14,7 +14,7 @@ describe("getProvedGameData", function() {
     // Populates the data
     const numberOfProofs = 20
     const numberOfPendingProofs = 5
-    const numberOfTodaysProofs = 13;
+    const numberOfTodaysProofs = 13
     const player = getRandomAddress()
     const game = getRandomAddress()
     const gamehashes = []
@@ -31,12 +31,12 @@ describe("getProvedGameData", function() {
 
     // Insert the data
     for (let i = 0; i < numberOfProofs; i++) {
-      let time = new Date(Date.now() - 60 * 60 * 1000);
+      let time = new Date(Date.now() - 60 * 60 * 1000)
       if (i > numberOfTodaysProofs - 1) {
         time.setDate(time.getDate() - 1)
       }
 
-      const proofType = (i < numberOfPendingProofs) ? "pending" : "proved"
+      const proofType = i < numberOfPendingProofs ? "pending" : "proved"
       const params = {
         TableName: process.env.DYNAMODB_TABLE,
         Item: {
@@ -47,7 +47,7 @@ describe("getProvedGameData", function() {
         },
       }
       ddb.put(params).promise()
-      await sleep(10);
+      await sleep(10)
     }
 
     // Actual call

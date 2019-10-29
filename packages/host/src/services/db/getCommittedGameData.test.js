@@ -30,7 +30,7 @@ describe("getCommittedGameData", function() {
         },
       }
       await ddb.put(params).promise()
-      await sleep(10);
+      await sleep(10)
     }
 
     // Actual Call

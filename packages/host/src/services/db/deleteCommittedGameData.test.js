@@ -30,7 +30,7 @@ describe("deleteCommittedGameData", function() {
         },
       }
       await ddb.put(params).promise()
-      await sleep(10);
+      await sleep(10)
     }
 
     // Verify the data inserted

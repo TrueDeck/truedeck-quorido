@@ -7,7 +7,7 @@ function getGameDataProofs(player, game) {
     IndexName: "lsi1",
     KeyConditionExpression: "pk = :pk",
     ExpressionAttributeValues: {
-      ":pk": `${player}#${game}#pending`
+      ":pk": `${player}#${game}#pending`,
     },
   }
   return ddb.query(params).promise()
